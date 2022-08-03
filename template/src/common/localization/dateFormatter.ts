@@ -1,7 +1,19 @@
-/* eslint-disable import/no-unassigned-import */
-import moment, {CalendarSpec} from "moment";
-import "moment/locale/en-gb";
-import "moment/locale/ru";
+import dayjs from "dayjs";
+// eslint-disable-next-line import/no-unassigned-import
+import "dayjs/locale/en";
+// eslint-disable-next-line import/no-unassigned-import
+import "dayjs/locale/ru";
+import calendar from "dayjs/plugin/calendar";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import utc from 'dayjs/plugin/utc';
+import relativeTime from "dayjs/plugin/relativeTime";
+import {getI18n} from "react-i18next";
+import {ICalendarSpec} from "~/types";
+
+dayjs.extend(calendar);
+dayjs.extend(relativeTime);
+dayjs.extend(customParseFormat);
+dayjs.extend(utc);
 
 export enum DateFormat {
   dayMonthShortYear = "DD.MM.YYYY",
@@ -21,9 +33,10 @@ export enum DateFormat {
   full = "YYYY-MM-DD HH:mm:ss",
   yearDateTime = "YYYY.MM.DD HH:mm",
   yearMonthDay = "YYYY.MM.DD",
+  yearMonthDaySpartak = 'YYYY-MM-DD'
 }
 
-const calendarFormat: CalendarSpec = {
+const calendarFormat: ICalendarSpec = {
   sameDay: "[Today]",
   nextDay: "[Tomorrow]",
   lastDay: "[Yesterday]",
@@ -56,7 +69,7 @@ export function dateFromFormat(date: Date | number | null | undefined | string, 
 
   const formattedDate: Date | null = dateFromUnknown(date);
   if (formattedDate) {
-    result = moment(formattedDate).format(format);
+    result = dayjs(formattedDate).format(format);
   }
 
   return result;
@@ -67,23 +80,42 @@ export function calendarDate(date: Date | null | number | undefined | string, wi
 
   const formattedDate: Date | null = dateFromUnknown(date);
   if (formattedDate) {
-    result = withFormat ? moment(formattedDate).calendar(null, calendarFormat) : moment(formattedDate).calendar();
+    result = withFormat ? dayjs(formattedDate).calendar(null, calendarFormat) : dayjs(formattedDate).calendar();
   }
 
   return result;
 }
 
-export function setMomentLocale(locale?: string): void {
-  moment.locale(locale);
+export function relativeDateFrom(date: Date | null | number | undefined | string): string {
+  let result = "";
+
+  const formattedDate: Date | null = dateFromUnknown(date);
+  if (formattedDate) {
+    const dateInJs = dayjs(formattedDate);
+
+    if (dayjs().subtract(1, "d").isBefore(date)) {
+      result = dateInJs.fromNow();
+    } else if (dayjs().subtract(2, "d").isBefore(date)) {
+      result = dateInJs.format(`[${getI18n().t("date.yesterdayAt")}] HH:mm`);
+    } else {
+      result = dateInJs.format(getI18n().t("date.calendarFormat"));
+    }
+  }
+
+  return result;
+}
+
+export function setDateLocale(locale: string): void {
+  dayjs.locale(locale);
 }
 
 export function getUnixDate(date: Date | null | number | undefined | string): number {
-  return moment(date).unix() * 1000;
+  return dayjs(date).unix() * 1000;
 }
 
 export function getInitialDate(date: Date | null | number | undefined | string, defaultDate?: Date): Date {
   if (date != null) {
-    return moment(date).toDate();
+    return dayjs(date).toDate();
   } else {
     return defaultDate || new Date();
   }

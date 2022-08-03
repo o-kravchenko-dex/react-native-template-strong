@@ -26,15 +26,17 @@ export interface IToastNavProps {
   location?: "bottom" | "top";
 }
 
-export const ToastOverlay: NavigationFunctionComponent<IToastNavProps> = ({
-                                                                            componentId,
-                                                                            text,
-                                                                            textStyle,
-                                                                            icon,
-                                                                            iconStyle,
-                                                                            loading,
-                                                                            location,
-                                                                          }) => {
+export const ToastOverlay: NavigationFunctionComponent<IToastNavProps> = (
+  {
+    componentId,
+    text,
+    textStyle,
+    icon,
+    iconStyle,
+    loading,
+    location,
+  }
+) => {
   const [constants, setConstants] = useState<NavigationConstants | undefined>(undefined);
   const animatedValue = useRef(new Animated.Value(0)).current;
 

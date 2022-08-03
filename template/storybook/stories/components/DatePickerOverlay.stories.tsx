@@ -1,7 +1,7 @@
 import React, {FC, useCallback, useState} from "react";
 import {ScrollView} from "react-native";
 import {DescriptionText} from "../../components/DescriptionText";
-import {DateFormat, dateFromFormat} from "~/common/localization/momentFormatter";
+import {DateFormat, dateFromFormat} from "~/common/localization/dateFormatter";
 import {showDatePicker} from "~/services/navigationService/showDatePicker";
 import {CommonStyles} from "~/core/theme/commonStyles";
 import {ButtonType, PrimaryButton} from "../../../src/common/components/PrimaryButton";

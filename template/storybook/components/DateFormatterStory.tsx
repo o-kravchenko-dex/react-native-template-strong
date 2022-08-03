@@ -7,7 +7,7 @@ import {
   dateFromString,
   dateFromUnknown,
   getUnixDate,
-} from "~/common/localization/momentFormatter";
+} from "~/common/localization/dateFormatter";
 import {CommonStyles} from "~/core/theme/commonStyles";
 import {TitleDescriptionBorder} from "./TitleDescriptionBorder";
 

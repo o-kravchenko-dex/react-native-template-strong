@@ -1,7 +1,7 @@
 import React, {FC, memo, useCallback} from "react";
 import {FlatList} from "react-native";
 import {TitleDescriptionBorder} from "./TitleDescriptionBorder";
-import {DateFormat, dateFromFormat} from "~/common/localization/momentFormatter";
+import {DateFormat, dateFromFormat} from "~/common/localization/dateFormatter";
 import {CommonStyles} from "~/core/theme/commonStyles";
 import {Separator} from "~/common/components/Separator";
 

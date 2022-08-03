@@ -1,10 +1,11 @@
-import {setMomentLocale} from "./momentFormatter";
+import {setDateLocale} from "./dateFormatter";
+// eslint-disable-next-line no-restricted-imports
 import i18n from "i18next";
 import {getI18n, initReactI18next, TFuncKey} from "react-i18next";
 import {findBestAvailableLanguage} from "react-native-localize";
 import {I18nManager} from "react-native";
-import type {en} from "./translations/en";
-import type {ru} from "./translations/ru";
+import type en from "./translations/en.json";
+import type ru from "./translations/ru.json";
 
 export const languages = [
   {languageTag: "en", isRTL: false, name: "English"},
@@ -19,19 +20,11 @@ export const languagesNames = languages.map(el => el.name);
 const getLanguageByTag = (tag?: string) => languages.find(el => el.languageTag == tag);
 
 export type LanguageResource = typeof en | typeof ru;
-// @ts-ignore
-const testRu: typeof en;
-// @ts-ignore
-let testEn: typeof ru;
-// @ts-ignore
-// eslint-disable-next-line prefer-const
-testEn = testRu;
+export type TFuncKeyApp<TPrefix = undefined> = TFuncKey<"translation", TPrefix, LanguageResource>;
 
-export type TFuncKeyApp = TFuncKey<"translation", undefined, LanguageResource>;
-
-const translationGetters: {[key: string]: (() => {[key: string]: LanguageResource}) | undefined} = {
-  en: () => require("./translations/en"),
-  ru: () => require("./translations/ru"),
+const translationGetters: {[key: string]: (() => typeof en & typeof ru) | undefined} = {
+  en: (): typeof en => require("./translations/en.json"),
+  ru: (): typeof ru => require("./translations/ru.json"),
 };
 
 i18n
@@ -51,14 +44,14 @@ export async function setLanguage(inputLanguage?: Languages): Promise<void> {
   i18n.addResourceBundle(
     language.languageTag,
     "translation",
-    translationGetters[language.languageTag]?.()[language.languageTag]["translation"],
+    translationGetters[language.languageTag]?.()['translation'],
     true,
     false,
   );
 
   I18nManager.forceRTL(language.isRTL);
+  setDateLocale(language.languageTag);
   await i18n.changeLanguage(language.languageTag);
-  setMomentLocale(language.languageTag);
 }
 
 export const i18next = getI18n();
