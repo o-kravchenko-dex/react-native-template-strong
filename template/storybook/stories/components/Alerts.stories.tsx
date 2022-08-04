@@ -1,11 +1,12 @@
 import React, {FC, useCallback} from "react";
 import {ScrollView} from "react-native";
 import {CommonStyles} from "~/core/theme/commonStyles";
-import {ButtonType, PrimaryButton} from "../../../src/common/components/PrimaryButton";
+import {PrimaryButton} from "~/common/components/PrimaryButton";
 import {Separator} from "~/common/components/Separator";
 import {showActionSheet, showAlert, showCommonDialog} from "~/common/helpers/dialogsHelpers";
 import {showShareDialog, showShareSocialDialog} from "~/common/helpers/shareHelpers";
 import Share from "react-native-share";
+import {ButtonType} from "~/types";
 
 export const AlertsStories: FC = () => {
   const onShowActionSheetPress = useCallback(() => {

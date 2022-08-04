@@ -2,7 +2,8 @@ import React, {FC, useCallback} from "react";
 import {ScrollView} from "react-native";
 import {ImageResources} from "~/common/ImageResources.g";
 import {CommonStyles} from "~/core/theme/commonStyles";
-import {ButtonType, PrimaryButton} from "../../../src/common/components/PrimaryButton";
+import { PrimaryButton} from "../../../src/common/components/PrimaryButton";
+import {ButtonType} from "~/types";
 
 export const PrimaryButtonStories: FC = () => {
   const onEmptyPress = useCallback(() => {

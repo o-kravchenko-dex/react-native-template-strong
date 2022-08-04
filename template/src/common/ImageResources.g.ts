@@ -7,7 +7,38 @@ import {ImageURISource} from "react-native";
  * !!! DO NOT EDIT !!!
  * For more information check the documentation:
  * https://github.com/svbutko/react-native-image-resource-generator
- */
+*/
+
+export class OnboardingResources {
+  static readonly onboarding_background_1: ImageURISource = require("../../resources/images/onboarding/onboarding_background_1.png");
+  static readonly onboarding_background_2: ImageURISource = require("../../resources/images/onboarding/onboarding_background_2.png");
+  static readonly onboarding_background_3: ImageURISource = require("../../resources/images/onboarding/onboarding_background_3.png");
+  static readonly onboarding_background_4: ImageURISource = require("../../resources/images/onboarding/onboarding_background_4.png");
+}
+
+export class TabbarDarkResources {
+  static readonly bag: ImageURISource = require("../../resources/images/tabbarDark/bag.png");
+  static readonly date: ImageURISource = require("../../resources/images/tabbarDark/date.png");
+  static readonly home: ImageURISource = require("../../resources/images/tabbarDark/home.png");
+  static readonly menu: ImageURISource = require("../../resources/images/tabbarDark/menu.png");
+  static readonly news: ImageURISource = require("../../resources/images/tabbarDark/news.png");
+}
+
+export class TabbarInactiveResources {
+  static readonly bag: ImageURISource = require("../../resources/images/tabbarInactive/bag.png");
+  static readonly date: ImageURISource = require("../../resources/images/tabbarInactive/date.png");
+  static readonly home: ImageURISource = require("../../resources/images/tabbarInactive/home.png");
+  static readonly menu: ImageURISource = require("../../resources/images/tabbarInactive/menu.png");
+  static readonly news: ImageURISource = require("../../resources/images/tabbarInactive/news.png");
+}
+
+export class TabbarLightResources {
+  static readonly bag: ImageURISource = require("../../resources/images/tabbarLight/bag.png");
+  static readonly date: ImageURISource = require("../../resources/images/tabbarLight/date.png");
+  static readonly home: ImageURISource = require("../../resources/images/tabbarLight/home.png");
+  static readonly menu: ImageURISource = require("../../resources/images/tabbarLight/menu.png");
+  static readonly news: ImageURISource = require("../../resources/images/tabbarLight/news.png");
+}
 
 export class ImageResources {
   static readonly arrow_left: ImageURISource = require("../../resources/images/arrow_left.png");

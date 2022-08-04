@@ -35,4 +35,8 @@ export const Pages = {
     id: "SETTINGS_SCREEN",
     name: "SettingsScreen",
   },
+  menu: {
+    id: "MENU_SCREEN",
+    name: "MenuScreen"
+  }
 };

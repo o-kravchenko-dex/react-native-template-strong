@@ -1,18 +1,19 @@
 import React, {FC, memo, useCallback, useMemo} from "react";
 import {
-  OpaqueColorValue,
   Pressable,
   PressableAndroidRippleConfig,
   PressableProps,
   PressableStateCallbackType,
+  StyleProp,
   ViewStyle,
 } from "react-native";
 import {Colors} from "~/core/theme/colors";
 import {isAndroid} from "~/core/theme/commonConsts";
 
 interface IProps extends PressableProps {
-  style?: ViewStyle | ViewStyle[];
-  highlightColor?: string | null | OpaqueColorValue;
+  style?: StyleProp<ViewStyle>;
+  highlightColor?: string;
+  androidRippleConfig?: PressableAndroidRippleConfig;
 }
 
 export const TouchablePlatform: FC<IProps> = memo(({children, highlightColor, ...props}) => {
@@ -24,9 +25,9 @@ export const TouchablePlatform: FC<IProps> = memo(({children, highlightColor, ..
         return [
           props.style,
           state.pressed &&
-            ({
-              backgroundColor: highlightColor,
-            } as ViewStyle),
+          ({
+            backgroundColor: `${highlightColor}33`,
+          } as ViewStyle),
         ];
       }
     },
@@ -38,7 +39,12 @@ export const TouchablePlatform: FC<IProps> = memo(({children, highlightColor, ..
   }, [highlightColor]);
 
   return (
-    <Pressable android_disableSound={false} android_ripple={rippleConfig} {...props} style={pressableStyle as any}>
+    <Pressable
+      android_disableSound={false}
+      android_ripple={props.androidRippleConfig || rippleConfig}
+      {...props}
+      style={pressableStyle as any}
+    >
       {children}
     </Pressable>
   );
@@ -50,5 +56,5 @@ const androidRippleConfig: PressableAndroidRippleConfig = {
 };
 
 TouchablePlatform.defaultProps = {
-  highlightColor: Colors.green,
+  highlightColor: Colors.buttonHighlight,
 };

@@ -11,4 +11,8 @@ export const Tabs = {
     id: "SETTINGS_TAB",
     name: "SettingsTab",
   },
+  menu: {
+    id: "MENU_TAB",
+    name: "MenuTab",
+  },
 };

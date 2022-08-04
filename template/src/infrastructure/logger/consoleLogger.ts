@@ -1,34 +1,34 @@
-import {Logger, LogLevel} from "../common/logger";
+import {Logger, LogLevel} from "./types/logger";
 
 // noinspection JSUnusedGlobalSymbols
-class ConsoleLogger implements Logger {
+export class ConsoleLogger implements Logger {
   private minLoggingLevel = LogLevel.verbose;
   private styles = new Map<LogLevel, string>();
+  private readonly category: string | undefined;
 
-  constructor(logLevel: LogLevel = LogLevel.verbose) {
+  constructor(logLevel: LogLevel = LogLevel.verbose, category?: string) {
     this.minLoggingLevel = logLevel;
+    this.category = category;
   }
 
   private logInternal(logLevel: LogLevel, message: string, ...info: any[]): void {
     if (this.minLoggingLevel <= logLevel) {
       let method = console.log;
-      let modifiedMessage = message;
+      let modifiedMessage = this.category ? `${this.category}: ${message}` : message;
       let style = this.styles.get(logLevel);
 
       switch (logLevel) {
         case LogLevel.verbose:
           method = console.log;
-          modifiedMessage = style ? `%c${message}` : `V: ${message}`;
+          modifiedMessage = style ? `%c${modifiedMessage}` : `V: ${modifiedMessage}`;
           break;
         case LogLevel.debug:
           method = console.log;
-          modifiedMessage = `D: %c${message}`;
-          modifiedMessage = style ? `%c${message}` : `D: ${message}`;
+          modifiedMessage = style ? `%c${modifiedMessage}` : `D: ${modifiedMessage}`;
           break;
         case LogLevel.info:
           method = console.log;
-          modifiedMessage = `I: %c${message}`;
-          modifiedMessage = style ? `%c${message}` : `I: ${message}`;
+          modifiedMessage = style ? `%c${modifiedMessage}` : `I: ${modifiedMessage}`;
           break;
         case LogLevel.warning:
           method = console.warn;
@@ -92,4 +92,3 @@ class ConsoleLogger implements Logger {
   }
 }
 
-export const consoleLogger = new ConsoleLogger();

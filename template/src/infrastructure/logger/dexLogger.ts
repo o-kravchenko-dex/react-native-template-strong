@@ -1,6 +1,11 @@
-import {HttpLogWriter, ILogEntry, ILogWriter, LogEntryType, Logger as DexLoggerImpl} from "dex-logger";
-import {Logger, LogLevel} from "../common/logger";
-import {appSettingsProvider} from "~/infrastructure";
+// noinspection ES6PreferShortImport
+import Config from "react-native-config";
+import {Logger, LogLevel} from "./types/logger";
+import {ILogWriter} from "./dexLogger/ILogWriter";
+import {ILogEntry} from "./dexLogger/LogEntry";
+import {HttpLogWriter} from "./dexLogger/HttpLogWriter";
+import {LogEntryType} from "./dexLogger/LogEntryType";
+import {Logger as DexLoggerImpl} from "./dexLogger/Logger";
 
 class ConsoleWriter implements ILogWriter {
   write(item: ILogEntry): void {
@@ -10,33 +15,18 @@ class ConsoleWriter implements ILogWriter {
   }
 }
 
-let references: (string[] | undefined) = [];
-
-let dexLoggerWriter: DexLoggerImpl = {
-  log: (message: string, info: any) => console.log(`dexLogger (not initialized): ${message}`, info),
-  info: (message: string, info: any) => console.log(`dexLogger (not initialized): ${message}`, info),
-  warning: (message: string, info: any) => console.log(`dexLogger (not initialized): ${message}`, info),
-  exception: (_error: any, message: string, info: any) => console.log(`dexLogger (not initialized): ${message}`, info),
-  addReference: (reference: string) => {
-    references?.push(reference);
-  },
-  clearReferences: () => {
-    /* ignored */
-  },
-} as any;
-
-appSettingsProvider.onSettingsEvaluated = () => {
+function createDexLoggerWriter(category?: string) {
   const writers: ILogWriter[] = [];
-  const predicate = appSettingsProvider.settings.environment == "Production"
+  const predicate = Config.ENVIRONMENT == "production"
     ? (entry: ILogEntry): boolean =>
       entry.Type == LogEntryType.Critical
       || entry.Type == LogEntryType.Exception
       || entry.Type == LogEntryType.Warning
     : (): boolean => true;
 
-  if (appSettingsProvider.settings.loggerUrl.startsWith("http")) {
+  if (Config.DEX_LOGGER_URL?.startsWith("http")) {
     const httpLogWriter = new HttpLogWriter(
-      appSettingsProvider.settings.loggerUrl,
+      Config.DEX_LOGGER_URL,
       fetch,
       (error): void => console.log(error), predicate,
     );
@@ -44,35 +34,41 @@ appSettingsProvider.onSettingsEvaluated = () => {
     writers.push(new ConsoleWriter());
   }
 
-  dexLoggerWriter = new DexLoggerImpl(writers, [`${appSettingsProvider.settings.appName}.Mobile`], references);
-  references = undefined;
-};
+  const categories = category
+    ? ["FC_Spartak.Mobile", `FC_Spartak.Mobile.${category}`]
+    : ["FC_Spartak.Mobile"];
 
-class DexLogger implements Logger {
+  return new DexLoggerImpl(writers, categories);
+}
+
+export class DexLogger implements Logger {
   private minLoggingLevel = LogLevel.verbose;
+  private dexLoggerInstance: DexLoggerImpl;
 
-  constructor(logLevel: LogLevel = LogLevel.verbose) {
+  constructor(logLevel: LogLevel = LogLevel.verbose, category?: string) {
     this.minLoggingLevel = logLevel;
+
+    this.dexLoggerInstance = createDexLoggerWriter(category);
   }
 
   private logInternal(logLevel: LogLevel, message: string, ...info: any[]): void {
     if (this.minLoggingLevel <= logLevel) {
       switch (logLevel) {
         case LogLevel.verbose:
-          dexLoggerWriter.log(message, {info});
+          this.dexLoggerInstance.suppress(message, {info});
           break;
         case LogLevel.debug:
-          dexLoggerWriter.log(message, {info});
+          this.dexLoggerInstance.log(message, {info});
           break;
         case LogLevel.info:
-          dexLoggerWriter.info(message, {info});
+          this.dexLoggerInstance.info(message, {info});
           break;
         case LogLevel.warning:
-          dexLoggerWriter.warning(message, {info});
+          this.dexLoggerInstance.warning(message, {info});
           break;
         case LogLevel.error:
           const error = new Error(message);
-          dexLoggerWriter.exception(error, message, {info});
+          this.dexLoggerInstance.exception(error, message, {info});
           break;
         default:
           break;
@@ -110,14 +106,12 @@ class DexLogger implements Logger {
 
   // own logger method
   addReference(reference: string) {
-    dexLoggerWriter.addReference(reference);
+    this.dexLoggerInstance.addReference(reference);
   }
 
   clearReferences() {
-    dexLoggerWriter.clearReferences();
+    this.dexLoggerInstance.clearReferences();
   }
 }
-
-export const dexLogger = new DexLogger();
 
 

@@ -1,15 +1,18 @@
-import React, {useCallback, useMemo, useState} from "react";
-import DateTimePicker from "@react-native-community/datetimepicker";
+import React, {useCallback, useState} from "react";
+import DateTimePicker, {DateTimePickerEvent} from "@react-native-community/datetimepicker";
 import {Platform, SafeAreaView, StyleSheet, View, ViewStyle} from "react-native";
-import {Navigation, NavigationFunctionComponent, OptionsTopBarButton} from "react-native-navigation";
+import {Navigation, NavigationFunctionComponent, Options} from "react-native-navigation";
 import {useNavigationButtonPress} from "react-native-navigation-hooks";
-import {ButtonType, PrimaryButton} from "./PrimaryButton";
-import {i18next} from "~/common/localization/localization";
+import {PrimaryButton} from "./PrimaryButton";
 import {isAndroid, isIos} from "~/core/theme/commonConsts";
 import {Fonts} from "~/core/theme/fonts";
 import {CommonStyles} from "~/core/theme/commonStyles";
 import {Colors} from "~/core/theme/colors";
 import {CommonSizes} from "~/core/theme/commonSizes";
+import {ButtonType} from "~/types";
+import {useTranslation} from "react-i18next";
+import {i18next} from "../localization/localization";
+import {useThemeColors} from "~/core/theme/hooks";
 
 export interface IDatePickerProps {
   value: Date;
@@ -22,27 +25,22 @@ const displayMode = isIos ? "inline" : "default";
 
 const doneButtonId = "doneButton";
 
-const rightButton: OptionsTopBarButton = {
-  id: doneButtonId,
-  text: i18next.t("common.done"),
-  fontFamily: Fonts.system,
-  enabled: true,
-};
-
 export const DatePickerOverlay: NavigationFunctionComponent<IDatePickerProps> = ({componentId, maxDate, minDate, onDateChange, value}) => {
   const [date, setDate] = useState<Date>(value);
+  const {t, i18n} = useTranslation();
+  const colors = useThemeColors();
 
   const onSetDate = useCallback(
-    (event: Event, selectedDate?: Date | undefined) => {
+    (event: DateTimePickerEvent, selectedDate?: Date) => {
       if (isAndroid) {
-        if (selectedDate == null) {
+        if (event.type == "dismissed") {
           Navigation.dismissOverlay(componentId);
         } else {
-          onDateChange && onDateChange(selectedDate);
+          onDateChange && selectedDate && onDateChange(selectedDate);
           Navigation.dismissOverlay(componentId);
         }
       } else {
-        selectedDate && setDate(selectedDate);
+        setDate(selectedDate!);
       }
     },
     [componentId, onDateChange],
@@ -52,10 +50,6 @@ export const DatePickerOverlay: NavigationFunctionComponent<IDatePickerProps> = 
     onDateChange && onDateChange(date);
     Navigation.dismissModal(componentId);
   }, [onDateChange, componentId, date]);
-
-  const locale = useMemo(() => {
-    return i18next.language;
-  }, []);
 
   useNavigationButtonPress(changeDate, {componentId, buttonId: doneButtonId});
 
@@ -69,31 +63,36 @@ export const DatePickerOverlay: NavigationFunctionComponent<IDatePickerProps> = 
           onChange={onSetDate}
           minimumDate={minDate}
           maximumDate={maxDate}
-          locale={locale}
+          locale={i18n.language}
+          themeVariant={colors.theme}
+          textColor={colors.text}
         />
-        {isIos && <PrimaryButton labelKey={"common.select"} type={ButtonType.solid} onPress={changeDate}/>}
+        {isIos && <PrimaryButton text={t("common.select")} type={ButtonType.solid} onPress={changeDate} />}
       </View>
     </SafeAreaView>
   );
 };
 
-DatePickerOverlay.options = {
-  ...Platform.select({
-    android: {
-      layout: {
-        componentBackgroundColor: Colors.transparent,
-      },
-      overlay: {
-        interceptTouchOutside: true,
-      },
+DatePickerOverlay.options = () => Platform.select<Options>({
+  android: {
+    layout: {
+      componentBackgroundColor: Colors.transparent,
     },
-    ios: {
-      topBar: {
-        rightButtons: [rightButton],
-      },
+    overlay: {
+      interceptTouchOutside: true,
     },
-  }),
-};
+  },
+  default: {
+    topBar: {
+      rightButtons: [{
+        id: doneButtonId,
+        text: i18next.t("common.done"),
+        fontFamily: Fonts.system,
+        enabled: true,
+      }],
+    },
+  },
+});
 
 const styles = StyleSheet.create({
   container: {

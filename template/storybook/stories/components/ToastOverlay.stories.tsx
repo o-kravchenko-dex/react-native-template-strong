@@ -5,7 +5,8 @@ import {showToast} from "~/services/navigationService/showToast";
 import {CommonStyles} from "~/core/theme/commonStyles";
 import {Colors} from "~/core/theme/colors";
 import {Separator} from "~/common/components/Separator";
-import {ButtonType, PrimaryButton} from "~/common/components/PrimaryButton";
+import {PrimaryButton} from "~/common/components/PrimaryButton";
+import {ButtonType} from "~/types";
 
 export const ToastOverlayStories: FC = () => {
   const showTopToast = useCallback(() => {

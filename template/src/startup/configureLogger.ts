@@ -1,47 +1,34 @@
-import {consoleLogger, logger} from "../infrastructure/logger";
-import Config from "react-native-config";
-import {AppEnvironment} from "~/types/react-native-config.types";
-import {Colors} from "~/core/theme/colors";
-import {dexLogger} from "~/infrastructure/logger/dexLogger";
-import {LogLevel} from "~/infrastructure/common/logger/LogLevel";
+import {LogLevel} from "~/infrastructure/logger/types/logger";
+import {createLogger} from "~/startup/createLogger";
+import {MultiLogger} from "~/infrastructure/logger/multiLogger";
+import {LogCategories, logger} from "~/infrastructure/logger";
+
+const loggers: Record<LogCategories, MultiLogger> = {} as any;
+
+export function getOrCreateLogger(category?: LogCategories) {
+  if (category) {
+    const existingLogger = loggers[category];
+    if (!existingLogger) {
+      const logSettings: Record<string, LogLevel> = {
+        [LogCategories.Queries]: __DEV__ ? LogLevel.debug : LogLevel.error,
+        [LogCategories.Analytics]: __DEV__ ? LogLevel.debug : LogLevel.error,
+        [LogCategories.Notification]: __DEV__ ? LogLevel.debug : LogLevel.error,
+        [LogCategories.DynamicLink]: __DEV__ ? LogLevel.debug : LogLevel.error,
+      };
+      let overrideLogLevel = LogLevel.error;
+      if (logSettings) {
+        overrideLogLevel = logSettings[category] ?? LogLevel.error;
+      }
+
+      loggers[category] = createLogger(new MultiLogger(), overrideLogLevel, category);
+    }
+
+    return loggers[category];
+  } else {
+    return logger;
+  }
+}
 
 export function configureLogger() {
-  let consoleLogLevel: LogLevel;
-  let dexLogLevel: LogLevel;
-  switch (Config.ENVIRONMENT) {
-    case AppEnvironment.development:
-      consoleLogLevel = LogLevel.verbose;
-      dexLogLevel = LogLevel.verbose;
-      break;
-    case AppEnvironment.test:
-      consoleLogLevel = LogLevel.info;
-      dexLogLevel = LogLevel.debug;
-      break;
-    case AppEnvironment.staging:
-      consoleLogLevel = LogLevel.info;
-      dexLogLevel = LogLevel.info;
-      break;
-    case AppEnvironment.production:
-      consoleLogLevel = LogLevel.warning;
-      dexLogLevel = LogLevel.warning;
-      break;
-    default:
-      consoleLogLevel = LogLevel.verbose;
-      dexLogLevel = LogLevel.verbose;
-  }
-
-  const verboseStyle = `color: #ccc; font-size: 10px; margin: -2px; margin-left: 2px`;
-
-  consoleLogger.setConsoleStyle(LogLevel.verbose, verboseStyle);
-  consoleLogger.setConsoleStyle(LogLevel.debug, `color: ${Colors.red}`);
-  consoleLogger.setConsoleStyle(LogLevel.info, `color: ${Colors.red}; font-weight: 600`);
-
-  // do not show console logs in production
-  if (__DEV__) {
-    consoleLogger.setMinLoggingLevel(consoleLogLevel);
-    logger.addLogger(consoleLogger);
-  }
-
-  dexLogger.setMinLoggingLevel(dexLogLevel);
-  logger.addLogger(dexLogger);
+  createLogger(logger, __DEV__ ? LogLevel.verbose : undefined);
 }

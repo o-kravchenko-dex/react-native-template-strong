@@ -1,7 +1,13 @@
-import {consoleLogger} from "./consoleLogger";
 import {logger} from "./multiLogger";
 
+enum LogCategories {
+  Queries = "Queries",
+  Analytics = "Analytics",
+  Notification = "Notification",
+  DynamicLink = "DynamicLink",
+}
+
 export {
-  consoleLogger,
   logger,
+  LogCategories,
 };

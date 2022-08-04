@@ -16,7 +16,7 @@ function getOptions(i18nKey: TFuncKeyApp, optionMigrator?: (customOptions: Optio
         fontFamily: Fonts.brand,
         fontSize: 17,
         fontWeight: "700",
-        color: Colors.primaryBlack,
+        color: Colors.black,
         alignment: "center",
       },
     },

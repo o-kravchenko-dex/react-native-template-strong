@@ -1,6 +1,6 @@
 import _ from "lodash";
 import moment from "moment";
-import {Logger, LogLevel} from "../common/logger";
+import { Logger, LogLevel } from "./types/logger";
 
 interface ISeqLoggerConfig {
   minLoggingLevel: LogLevel;
@@ -40,7 +40,7 @@ class SeqLogger implements Logger {
       }, {
         headers: {
           "Content-Type": "application/json",
-          "Accept": "*/*",
+          "Accept": "*/*"
         },
       }),
     )

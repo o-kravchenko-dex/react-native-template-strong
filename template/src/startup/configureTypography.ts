@@ -58,12 +58,12 @@ export const typographyStyles = {
     } as TextStyle,
   },
   Regular: {
-    H1: {fontWeight: "400", fontSize: 15, lineHeight: 20, color: Colors.primaryBlack} as TextStyle,
-    H2: {fontWeight: "400", fontSize: 15, lineHeight: 22, color: Colors.primaryBlack} as TextStyle,
-    H3: {fontWeight: "400", fontSize: 13, lineHeight: 18, color: Colors.primaryBlack} as TextStyle,
-    H4: {fontWeight: "400", fontSize: 11, lineHeight: 14, color: Colors.primaryBlack} as TextStyle,
-    H5: {fontWeight: "400", fontSize: 11, lineHeight: 14, color: Colors.primaryBlack} as TextStyle,
-    H6: {fontWeight: "400", fontSize: 9, lineHeight: 12, color: Colors.primaryBlack} as TextStyle,
+    H1: {fontWeight: "400", fontSize: 15, lineHeight: 20, color: Colors.black} as TextStyle,
+    H2: {fontWeight: "400", fontSize: 15, lineHeight: 22, color: Colors.black} as TextStyle,
+    H3: {fontWeight: "400", fontSize: 13, lineHeight: 18, color: Colors.black} as TextStyle,
+    H4: {fontWeight: "400", fontSize: 11, lineHeight: 14, color: Colors.black} as TextStyle,
+    H5: {fontWeight: "400", fontSize: 11, lineHeight: 14, color: Colors.black} as TextStyle,
+    H6: {fontWeight: "400", fontSize: 9, lineHeight: 12, color: Colors.black} as TextStyle,
   },
 };
 

@@ -1,10 +1,7 @@
-import {ColorValue, PressableProps, TextStyle, ViewStyle} from "react-native";
+import {PressableProps, StyleProp, ViewStyle} from "react-native";
 import {RehydrateAction} from "redux-persist";
 import {RootState} from "~/core/store/rootReducer";
 import {TextInputMaskOptionProp, TextInputMaskTypeProp} from "react-native-masked-text";
-import {SFSymbols} from "../../resources/symbols/SFSymbols";
-import {IconProps} from "react-native-vector-icons/Icon";
-import {SFSymbolProps} from "react-native-sfsymbols";
 
 export interface ICalendarSpec {
   sameDay: string;
@@ -15,29 +12,35 @@ export interface ICalendarSpec {
   sameElse: string;
 }
 
-export interface IIconPlatformProps extends Omit<IconProps, "name" | "color">, Omit<SFSymbolProps, "name"> {
-  iosName?: SFSymbols;
-  androidName?: string;
-  color?: ColorValue;
-  style?: TextStyle | ViewStyle;
-}
-
-export enum AppEnvironment {
-  development = "development",
-  test = "test",
-  staging = "staging",
-  production = "production",
-}
-
 export interface INavigationPage {
   id: string;
   name: string;
 }
 
+export interface IGetOptions {
+  title: string;
+  screenId?: string;
+  optionalButtons?: IGetOptionsOptionalButtons;
+}
+
+export interface IGetOptionsOptionalButtons {
+  cancelButton?: boolean;
+  hideBackButton?: boolean;
+  filterTeams?: boolean;
+  promotionsHistory?: boolean;
+  infoButton?: boolean;
+}
+
 export interface IOnboardingData {
   header: string;
   body: string;
-  icon: SFSymbols | string;
+  buttons: IOnboardingButton[];
+}
+
+export interface IOnboardingButton {
+  type: ButtonType;
+  text: string;
+  actionType: "continue" | "allowPush" | "register" | "login";
 }
 
 export enum LoadState {
@@ -46,14 +49,15 @@ export enum LoadState {
   error = "error",
   allIsLoaded = "allIsLoaded",
 
-  firstLoad = "firstLoad",
   pullToRefresh = "pullToRefresh",
+
+  firstLoad = "firstLoad",
   refreshing = "refreshing",
   loadingMore = "loadingMore",
 }
 
 export interface TouchablePlatformProps extends Omit<PressableProps, "style"> {
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 }
 
 export enum ButtonType {
@@ -61,6 +65,11 @@ export enum ButtonType {
   borderless = "borderless",
   outline = "outline",
   outlineNegative = "outlineNegative",
+}
+
+export interface IReduxMeta<T> {
+  requestId: string;
+  arg: T;
 }
 
 export interface IListState<T> {

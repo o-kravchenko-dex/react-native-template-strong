@@ -1,9 +1,10 @@
-import {Logger, LogLevel} from "../common/logger";
+import {Logger, LogLevel} from "./types/logger";
+import {DexLogger} from "~/infrastructure/logger/dexLogger";
 
-const loggers: Logger[] = [];
 
 // noinspection JSUnusedGlobalSymbols
-class MultiLogger implements Logger {
+export class MultiLogger implements Logger {
+  private loggers: Logger[] = [];
   private minLoggingLevel: LogLevel | undefined;
 
   constructor(logLevel?: LogLevel) {
@@ -11,7 +12,7 @@ class MultiLogger implements Logger {
   }
 
   addLogger(logger: Logger) {
-    loggers.push(logger);
+    this.loggers.push(logger);
 
     if (this.minLoggingLevel) {
       logger.setMinLoggingLevel(this.minLoggingLevel);
@@ -19,37 +20,52 @@ class MultiLogger implements Logger {
   }
 
   setMinLoggingLevel(logLevel: LogLevel): void {
-    loggers.map(logger => logger.setMinLoggingLevel(logLevel));
+    this.loggers.map(logger => logger.setMinLoggingLevel(logLevel));
   }
 
   logWithLevel(logLevel: LogLevel, message: string, ...info: any[]): void {
-    loggers.map(logger => logger.logWithLevel(logLevel, message, ...info));
+    this.loggers.map(logger => logger.logWithLevel(logLevel, message, ...info));
   }
 
   log(message: string, ...info: any[]): void {
-    loggers.map(logger => logger.logWithLevel(LogLevel.debug, message, ...info));
+    this.loggers.map(logger => logger.logWithLevel(LogLevel.debug, message, ...info));
   }
 
   verb(message: string, ...info: any[]): void {
-    loggers.map(logger => logger.verb(message, ...info));
+    this.loggers.map(logger => logger.verb(message, ...info));
   }
 
   debug(message: string, ...info: any[]): void {
-    loggers.map(logger => logger.debug(message, ...info));
+    this.loggers.map(logger => logger.debug(message, ...info));
   }
 
   info(message: string, ...info: any[]): void {
-    loggers.map(logger => logger.info(message, ...info));
+    this.loggers.map(logger => logger.info(message, ...info));
   }
 
   warn(message: string, ...info: any[]): void {
-    loggers.map(logger => logger.warn(message, ...info));
+    this.loggers.map(logger => logger.warn(message, ...info));
   }
 
   error(message: string, ...info: any[]): void {
-    loggers.map(logger => logger.error(message, ...info));
+    this.loggers.map(logger => logger.error(message, ...info));
   }
 
+  addReference(reference: string) {
+    this.loggers.map(logger => {
+      if(logger instanceof DexLogger) {
+        logger.addReference(reference);
+      }
+    });
+  }
+
+  clearReferences() {
+    this.loggers.map(logger => {
+      if(logger instanceof DexLogger) {
+        logger.clearReferences();
+      }
+    });
+  }
 }
 
 export const logger = new MultiLogger();

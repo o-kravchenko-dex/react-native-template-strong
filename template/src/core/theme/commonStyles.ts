@@ -7,6 +7,12 @@ export const CommonStyles = StyleSheet.create({
   flex1: {
     flex: 1,
   } as ViewStyle,
+  flexGrow: {
+    flexGrow: 1,
+  } as ViewStyle,
+  flexShrink: {
+    flexShrink: 1,
+  } as ViewStyle,
   flex1Padding: {
     flex: 1,
     paddingHorizontal: CommonSizes.spacing.medium,
@@ -46,6 +52,19 @@ export const CommonStyles = StyleSheet.create({
       } as ViewStyle,
     }),
   } as ViewStyle,
+  shadowTopBar: {
+    ...Platform.select({
+      ios: {
+        shadowOffset: {height: 8, width: 0},
+        shadowOpacity: 1,
+        shadowRadius: 12,
+        shadowColor: "rgba(0.22, 0.27, 0.28, 0.08)",
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
+  },
   iPhoneXFooter: {
     height: 20,
   } as ViewStyle,
@@ -55,4 +74,7 @@ export const CommonStyles = StyleSheet.create({
     lineHeight: CommonSizes.lineHeight.medium,
     color: Colors.black,
   } as TextStyle,
+  noTextTransform: {
+    textTransform: "none",
+  },
 });

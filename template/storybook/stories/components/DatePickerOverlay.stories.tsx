@@ -4,9 +4,10 @@ import {DescriptionText} from "../../components/DescriptionText";
 import {DateFormat, dateFromFormat} from "~/common/localization/dateFormatter";
 import {showDatePicker} from "~/services/navigationService/showDatePicker";
 import {CommonStyles} from "~/core/theme/commonStyles";
-import {ButtonType, PrimaryButton} from "../../../src/common/components/PrimaryButton";
+import {PrimaryButton} from "../../../src/common/components/PrimaryButton";
 import {Separator} from "~/common/components/Separator";
 import dayjs from "dayjs";
+import {ButtonType} from "~/types";
 
 export const DatePickerOverlayStories: FC = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());

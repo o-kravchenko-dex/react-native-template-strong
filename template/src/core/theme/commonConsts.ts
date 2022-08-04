@@ -1,6 +1,8 @@
 import dayjs from "dayjs";
 import {Dimensions, PixelRatio, Platform, StatusBar, StyleSheet} from "react-native";
 import Device from "react-native-device-detection";
+import Config from "react-native-config";
+import {AppEnvironment} from "~/types/react-native-config.types";
 
 const windowDimensions = Dimensions.get("window");
 export const isIos = Device.isIos;
@@ -28,3 +30,10 @@ export const minWindowDimension = Math.min(windowHeight, windowWidth);
 
 export const minimalLegalAge = dayjs().subtract(16, "years").toDate();
 export const maximalAge = dayjs().subtract(100, "years").toDate();
+
+export const isDev = Config.ENVIRONMENT === AppEnvironment.development;
+
+export const StatusBarHeightIos = isIos ? isIphoneX ? 50 : 20 : 0;
+export const StatusBarHeightAndroid = StatusBar.currentHeight || 0;
+
+export const StatusBarHeight = StatusBarHeightIos || StatusBarHeightAndroid;
