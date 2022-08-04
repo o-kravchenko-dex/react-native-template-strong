@@ -1,58 +1,105 @@
-import React, {FC, memo} from "react";
-import {StyleSheet, TextStyle, View, ViewStyle} from "react-native";
+import React, {FC, memo, useCallback} from "react";
+import {Image, ImageStyle, StyleSheet, TextStyle, View, ViewStyle} from "react-native";
+import {useTranslation} from "react-i18next";
 import {CommonSizes} from "~/core/theme/commonSizes";
 import {CommonStyles} from "~/core/theme/commonStyles";
-import {i18next} from "~/common/localization/localization";
-import {Brand} from "~/infrastructure";
-import {LoadState} from "~/types";
+import {ImageResources} from "../ImageResources.g";
+import {PrimaryButton} from "./PrimaryButton";
+import {ButtonType} from "~/types";
 import {LoadingComponent} from "./LoadingComponent";
-import {Colors} from "~/core/theme/colors";
-import {ButtonType, PrimaryButton} from "~/common/components/PrimaryButton";
+import {Regular} from "~/infrastructure";
+import {useThemedStyles} from "~/core/theme/hooks";
+import {ThemeColors} from "~/core/theme/colors";
 
-interface IProps {
+import {FetchBaseQueryError} from "@reduxjs/toolkit/dist/query/react";
+import {SerializedError} from "@reduxjs/toolkit";
+import {ErrorComponent} from "~/common/components/ErrorComponent";
+import {ru} from "~/common/localization/translations/ru";
+
+type Props = {
   onPress?: () => void;
-  errorText?: string | null;
-  loadState: LoadState;
-}
+  isLoading?: boolean;
+  forceTheme?: "light" | "dark";
+  backgroundKey?: keyof ThemeColors;
+} & ({
+  errorText: string | null;
+} | {
+  error: FetchBaseQueryError | SerializedError;
+});
 
-export const TryAgain: FC<IProps> = memo(({onPress, errorText, loadState}) => {
+export const TryAgain: FC<Props> = memo((props) => {
+  const {onPress, isLoading, forceTheme, backgroundKey = "background"} = props;
+  const errorText = (props as any).errorText;
+  const queryError = (props as any).error as FetchBaseQueryError;
+  const serializedError = (props as any).error as SerializedError;
+  const {t} = useTranslation();
+
+  const styles = useThemedStyles(stylesGetter, forceTheme);
+
+  const renderErrorText = useCallback(() => {
+    const errorString = errorText || (queryError as any).error || serializedError?.message;
+
+    return (
+      <>
+        <Image style={styles.image} source={ImageResources.avatar} resizeMode={"contain"} />
+        //todo replace source
+        <Regular.H2 style={styles.title} text={errorString} />
+        {onPress != null
+          ? (
+            <PrimaryButton
+              isLoading={isLoading}
+              text={t("errors.tryAgain")}
+              onPress={onPress}
+              type={ButtonType.outline}
+              forceTheme={forceTheme}
+            />
+          )
+          : isLoading && (
+          <LoadingComponent containerStyle={styles.loader} />
+        )}
+      </>
+    );
+  }, [errorText, isLoading, onPress, queryError, serializedError?.message, styles.image, styles.loader, styles.title, t, forceTheme]);
+
   return (
     <View style={styles.container}>
-      <Brand.H4 style={styles.title}>{errorText}</Brand.H4>
-      {onPress != null ? (
-        <PrimaryButton
-          isLoading={loadState != LoadState.error}
-          labelKey={"errors.tryAgain"}
+      {Number(queryError?.status) && ru.translation.errors.status.hasOwnProperty(queryError.status)
+        ? <ErrorComponent
+          error={queryError}
+          isLoading={isLoading}
+          forceTheme={forceTheme}
           onPress={onPress}
-          type={ButtonType.outline}
+          backgroundKey={backgroundKey}
         />
-      ) : (
-        <LoadingComponent containerStyle={styles.loader}/>
-      )}
+        : renderErrorText()}
     </View>
   );
 });
 
-TryAgain.defaultProps = {
-  errorText: i18next.t("errors.unknownErrorHasOccurred"),
-};
-
-const styles = StyleSheet.create({
+const stylesGetter = (colors: ThemeColors) => (StyleSheet.create({
   container: {
-    ...CommonStyles.flexCenter,
+    ...CommonStyles.flex1,
+    alignItems: "center",
     padding: CommonSizes.spacing.medium,
+    paddingTop: CommonSizes.spacing.largePlus,
   } as ViewStyle,
   title: {
     textAlign: "center",
-    marginBottom: CommonSizes.spacing.extraSmall,
+    marginBottom: CommonSizes.spacing.mediumPlus,
+    color: colors.text,
   } as TextStyle,
   description: {
     textAlign: "center",
-    textDecorationLine: "underline",
-  } as TextStyle,
+    color: colors.secondaryText,
+  },
+  image: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    alignSelf: "center",
+  } as ImageStyle,
   loader: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: "center",
-    backgroundColor: Colors.black,
   },
-});
+}));

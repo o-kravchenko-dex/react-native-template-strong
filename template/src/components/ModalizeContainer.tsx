@@ -7,8 +7,8 @@ import {useThemedStyles} from "~/core/theme/hooks";
 import {Navigation, NavigationFunctionComponent} from "react-native-navigation";
 import {CommonSizes} from "~/core/theme/commonSizes";
 import {TouchablePlatform} from "~/common/components/TouchablePlatform";
-import {PersonalAreaResources} from "~/common/ImageResources.g";
 import {useMount} from "~/common/hooks/useMount";
+import {ImageResources} from "~/common/ImageResources.g";
 
 interface IProps {
   getHeaderComponent?: (closeButton: React.ReactNode) => React.ReactNode;
@@ -36,7 +36,7 @@ export const ModalizeContainer: NavigationFunctionComponent<IProps> = memo((prop
 
   const closeButton = useMemo(() => (
     <TouchablePlatform onPress={closeModal} style={styles.closeContainer}>
-      <Image source={PersonalAreaResources.close_modal} />
+      <Image source={ImageResources.close_modal} />
     </TouchablePlatform>
   ), [closeModal, styles.closeContainer]);
 

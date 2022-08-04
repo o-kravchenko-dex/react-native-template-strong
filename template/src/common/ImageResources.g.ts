@@ -42,7 +42,10 @@ export class TabbarLightResources {
 
 export class ImageResources {
   static readonly arrow_left: ImageURISource = require("../../resources/images/arrow_left.png");
+  static readonly arrow_right: ImageURISource = require("../../resources/images/arrow_right.png");
   static readonly avatar: ImageURISource = require("../../resources/images/avatar.png");
   static readonly camera: ImageURISource = require("../../resources/images/camera.png");
+  static readonly check: ImageURISource = require("../../resources/images/check.png");
+  static readonly close_modal: ImageURISource = require("../../resources/images/close_modal.png");
   static readonly menu: ImageURISource = require("../../resources/images/menu.png");
 }
