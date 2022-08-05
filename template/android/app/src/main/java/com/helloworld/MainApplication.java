@@ -19,6 +19,8 @@ import java.util.List;
 
 import com.facebook.react.bridge.JSIModulePackage;
 
+import com.facebook.soloader.SoLoader;
+
 
 public class MainApplication extends NavigationApplication {
     private final ReactNativeHost mNewArchitectureNativeHost =
@@ -61,7 +63,12 @@ public class MainApplication extends NavigationApplication {
     super.onCreate();
     // If you opted-in for the New Architecture, we enable the TurboModule system
     ReactFeatureFlags.useTurboModules = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
+
+    I18nUtil sharedI18nUtilInstance = I18nUtil.getInstance();
+    sharedI18nUtilInstance.allowRTL(this, true);
+    SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+    registerActivityLifecycleCallbacks(OrientationActivityLifecycle.getInstance());
   }
 
   /**
