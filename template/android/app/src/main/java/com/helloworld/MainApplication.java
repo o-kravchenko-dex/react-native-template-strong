@@ -19,10 +19,9 @@ import java.util.List;
 
 import com.facebook.react.bridge.JSIModulePackage;
 
-import com.facebook.soloader.SoLoader;
-
 
 public class MainApplication extends NavigationApplication {
+
     private final ReactNativeHost mNewArchitectureNativeHost =
             new MainApplicationReactNativeHost(this);
 
@@ -48,58 +47,55 @@ public class MainApplication extends NavigationApplication {
                 }
             };
 
-  @Override
-  public ReactNativeHost getReactNativeHost() {
-    if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
-      return mNewArchitectureNativeHost;
-    } else {
-      return mReactNativeHost;
+    @Override
+    public ReactNativeHost getReactNativeHost() {
+        if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
+            return mNewArchitectureNativeHost;
+        } else {
+            return mReactNativeHost;
+        }
     }
-  }
 
+   @Override
+    public void onCreate() {
+        super.onCreate();
+        // If you opted-in for the New Architecture, we enable the TurboModule system
+        ReactFeatureFlags.useTurboModules = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
 
-  @Override
-  public void onCreate() {
-    super.onCreate();
-    // If you opted-in for the New Architecture, we enable the TurboModule system
-    ReactFeatureFlags.useTurboModules = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
+        I18nUtil sharedI18nUtilInstance = I18nUtil.getInstance();
+        sharedI18nUtilInstance.allowRTL(this, true);
+        initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+        registerActivityLifecycleCallbacks(OrientationActivityLifecycle.getInstance());
+    }
 
-    I18nUtil sharedI18nUtilInstance = I18nUtil.getInstance();
-    sharedI18nUtilInstance.allowRTL(this, true);
-    SoLoader.init(this, /* native exopackage */ false);
-    initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
-    registerActivityLifecycleCallbacks(OrientationActivityLifecycle.getInstance());
-  }
-
-  /**
-   * Loads Flipper in React Native templates. Call this in the onCreate method with something like
-   * initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
-   *
-   * @param context
-   * @param reactInstanceManager
-   */
-
-  private static void initializeFlipper(
-      Context context, ReactInstanceManager reactInstanceManager) {
-    if (BuildConfig.DEBUG) {
-      try {
+    /**
+     * Loads Flipper in React Native templates. Call this in the onCreate method with something like
+     * initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+     *
+     * @param context
+     * @param reactInstanceManager
+     */
+    private static void initializeFlipper(
+            Context context, ReactInstanceManager reactInstanceManager) {
+        if (BuildConfig.DEBUG) {
+            try {
         /*
          We use reflection here to pick up the class that initializes Flipper,
         since Flipper library is not available in release mode
         */
-        Class<?> aClass = Class.forName("com.rndiffapp.ReactNativeFlipper");
-        aClass
-            .getMethod("initializeFlipper", Context.class, ReactInstanceManager.class)
-            .invoke(null, context, reactInstanceManager);
-      } catch (ClassNotFoundException e) {
-        e.printStackTrace();
-      } catch (NoSuchMethodException e) {
-        e.printStackTrace();
-      } catch (IllegalAccessException e) {
-        e.printStackTrace();
-      } catch (InvocationTargetException e) {
-        e.printStackTrace();
-      }
+                Class<?> aClass = Class.forName("com.fc_spartak.ReactNativeFlipper");
+                aClass
+                        .getMethod("initializeFlipper", Context.class, ReactInstanceManager.class)
+                        .invoke(null, context, reactInstanceManager);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        }
     }
-  }
 }

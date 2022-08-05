@@ -25,14 +25,23 @@
       android:networkSecurityConfig="@xml/network_security_config"
       android:theme="@style/AppTheme">
         <activity
-            android:name="com.zoontek.rnbootsplash.RNBootSplashActivity"
-            android:theme="@style/SplashTheme"
-            android:launchMode="singleTask"
-            android:exported="true"
-            android:configChanges="uiMode">
+                android:name="com.zoontek.rnbootsplash.RNBootSplashActivity"
+                android:launchMode="singleTask"
+                android:exported="true"
+                android:theme="@style/BootTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                        android:host="spartakdev.page.link"
+                        android:scheme="https" />
             </intent-filter>
         </activity>
       <activity
