@@ -22,15 +22,14 @@ import {PasswordIcon} from "./PasswordIcon";
 import {FieldError} from "react-hook-form/dist/types";
 import {InputDateIcon} from "./InputDateIcon";
 import {TextInputMask} from "react-native-masked-text";
-import {ErrorType} from "~/common/api/dto/common/ErrorType";
-import {ValidationError} from "~/common/api/dto/common";
-import {serverErrorMessageProvider} from "~/common/helpers/serverErrorMessageProvider";
-import {ErrorSignType} from "~/common/api/dto/common/ErrorSignType";
 import {useTranslation} from "react-i18next";
 import {FlagButtonProps} from "react-native-country-picker-modal/lib/FlagButton";
 import {ImageResources} from "~/common/ImageResources.g";
-import {DropDownIcon} from "~/modules/authentication/components/DropDownIcon";
 import {useMount} from "~/common/hooks/useMount";
+import {DropDownIcon} from "~/common/components/DropDownIcon";
+import {ValidationError} from "~/infrastructure/dto/common";
+import {ErrorType} from "~/infrastructure/dto/common/ErrorType";
+import {ErrorSignType} from "~/infrastructure/dto/common/ErrorSignType";
 
 interface IProps extends TextInputProps {
   nextInputFocusRefGetter?: () => (MutableRefObject<any> | undefined);
@@ -74,7 +73,7 @@ export const CustomInput = (
     ...props
   }: IProps) => {
   const styles = useThemedStyles(stylesGetter);
-  const {i18n} = useTranslation();
+  const {i18n, t} = useTranslation();
   const [isPasswordShown, setPasswordShown] = useState<boolean>(false);
   const ref = useRef<TextInput | null>();
 
@@ -107,15 +106,16 @@ export const CustomInput = (
   const errorMessage: string = useMemo(
     () => {
       if (error?.type == "required") {
-        return i18n.t("validation.required");
+        return t("validation.required");
       } else if (error?.type == "minLength") {
-        return i18n.t("validation.loginFormat");
+        return t("validation.loginFormat");
       } else {
-        return (error?.message as TFuncKeyApp || serverErrorMessageProvider(serverError, isPassword));
+        return (error?.message as TFuncKeyApp || ""/*|| serverErrorMessageProvider(serverError, isPassword)*/);
       }
     },
-    [error, i18n, serverError, isPassword],
+    [error, t, serverError, isPassword],
   );
+  //todo add errorMessageProvider
 
   const onLocalCountryChange = useCallback((selectedCountry: Country) => {
     onCountryChange?.(selectedCountry);

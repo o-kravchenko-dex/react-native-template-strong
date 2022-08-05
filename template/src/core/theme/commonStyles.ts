@@ -36,6 +36,9 @@ export const CommonStyles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   } as ViewStyle,
+  row: {
+    flexDirection: "row",
+  } as ViewStyle,
   columnAlignStart: {
     flexDirection: "column",
     alignItems: "flex-start",
