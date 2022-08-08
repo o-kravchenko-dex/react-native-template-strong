@@ -1,23 +1,26 @@
 import React, {useEffect} from "react";
 import {NavigationFunctionComponent} from "react-native-navigation";
-import {setOnboardingRoot, setTabsRoot} from "../../navigation/roots";
-import {useAppSelector} from "../../core/store/store";
-import {LoadingComponent} from "../../common/components/LoadingComponent";
-import {isIos} from "../../core/theme/commonConsts";
-import {showOnboarding} from "../../navigation/helpers/showOnboarding";
+import {getTabsRootLayout, setOnboardingRoot} from "~/navigation/roots";
+import {useAppSelector} from "~/core/store/store";
+import {LoadingComponent} from "~/common/components/LoadingComponent";
+import {navigation} from "~/services";
 
 export const Splash: NavigationFunctionComponent = () => {
-  const isOnboardingVisited = useAppSelector((state) => state.system.isOnboardingVisited);
+  const [appTheme, deviceTheme, isOnboardingVisited] = useAppSelector(state => [
+    state.system.appTheme,
+    state.system.deviceTheme,
+    state.system.isOnboardingVisited,
+  ]);
 
   useEffect(() => {
     if (isOnboardingVisited) {
-      setTabsRoot();
-    } else if (isIos) {
-      setTabsRoot(showOnboarding);
+      navigation.setRoot(getTabsRootLayout(appTheme || deviceTheme || "dark"));
+      // .then(async () => dynamicLink.init());
+      // (async () => dynamicLink.init())();
     } else {
-      setOnboardingRoot();
+      (async () => setOnboardingRoot())();
     }
-  }, [isOnboardingVisited]);
+  }, [appTheme, deviceTheme, isOnboardingVisited]);
 
-  return <LoadingComponent />;
+  return <LoadingComponent size={"large"} />;
 };

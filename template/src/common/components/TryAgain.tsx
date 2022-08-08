@@ -1,47 +1,104 @@
-import React, {FC, memo} from "react";
-import {StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewStyle} from "react-native";
-import {PlatformColorsAndroid, PlatformColorsIOS} from "../../core/theme/colors";
-import {CommonSizes} from "../../core/theme/commonSizes";
-import {CommonStyles} from "../../core/theme/commonStyles";
-import {platformNativeColor} from "../helpers/colorHelpers";
-import {localization} from "../localization/localization";
+import React, {FC, memo, useCallback} from "react";
+import {Image, ImageStyle, StyleSheet, TextStyle, View, ViewStyle} from "react-native";
+import {useTranslation} from "react-i18next";
+import {CommonSizes} from "~/core/theme/commonSizes";
+import {CommonStyles} from "~/core/theme/commonStyles";
+import {ImageResources} from "../ImageResources.g";
+import {PrimaryButton} from "./PrimaryButton";
+import {ButtonType} from "~/types";
+import {LoadingComponent} from "./LoadingComponent";
+import {Regular} from "~/infrastructure";
+import {useThemedStyles} from "~/core/theme/hooks";
+import {ThemeColors} from "~/core/theme/colors";
 
-interface IProps {
+import {FetchBaseQueryError} from "@reduxjs/toolkit/dist/query/react";
+import {SerializedError} from "@reduxjs/toolkit";
+import {ErrorComponent} from "~/common/components/ErrorComponent";
+
+type Props = {
   onPress?: () => void;
-  errorText?: string | null;
-}
+  isLoading?: boolean;
+  forceTheme?: "light" | "dark";
+  backgroundKey?: keyof ThemeColors;
+} & ({
+  errorText: string | null;
+} | {
+  error: FetchBaseQueryError | SerializedError;
+});
 
-export const TryAgain: FC<IProps> = memo(({onPress, errorText}) => {
+export const TryAgain: FC<Props> = memo((props) => {
+  const {onPress, isLoading, forceTheme, backgroundKey = "background"} = props;
+  const errorText = (props as any).errorText;
+  const queryError = (props as any).error as FetchBaseQueryError;
+  const serializedError = (props as any).error as SerializedError;
+  const {t} = useTranslation();
+
+  const styles = useThemedStyles(stylesGetter, forceTheme);
+
+  const renderErrorText = useCallback(() => {
+    const errorString = errorText || (queryError as any).error || serializedError?.message;
+
+    return (
+      <>
+        <Image style={styles.image} source={ImageResources.avatar} resizeMode={"contain"} />
+        //todo replace source
+        <Regular.H2 style={styles.title} text={errorString} />
+        {onPress != null
+          ? (
+            <PrimaryButton
+              isLoading={isLoading}
+              text={t("errors.tryAgain")}
+              onPress={onPress}
+              type={ButtonType.outline}
+              forceTheme={forceTheme}
+            />
+          )
+          : isLoading && (
+          <LoadingComponent containerStyle={styles.loader} />
+        )}
+      </>
+    );
+  }, [errorText, isLoading, onPress, queryError, serializedError?.message, styles.image, styles.loader, styles.title, t, forceTheme]);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{errorText}</Text>
-      {onPress != null && (
-        <TouchableOpacity onPress={onPress}>
-          <Text style={styles.description}>{localization.errors.tryAgain}</Text>
-        </TouchableOpacity>
-      )}
+      {Number(queryError?.status)
+        ? <ErrorComponent
+          error={queryError}
+          isLoading={isLoading}
+          forceTheme={forceTheme}
+          onPress={onPress}
+          backgroundKey={backgroundKey}
+        />
+        : renderErrorText()}
     </View>
   );
 });
 
-TryAgain.defaultProps = {
-  errorText: localization.errors.unknownErrorHasOccurred,
-};
-
-const styles = StyleSheet.create({
+const stylesGetter = (colors: ThemeColors) => (StyleSheet.create({
   container: {
-    ...CommonStyles.flexCenter,
+    ...CommonStyles.flex1,
+    alignItems: "center",
     padding: CommonSizes.spacing.medium,
+    paddingTop: CommonSizes.spacing.largePlus,
   } as ViewStyle,
   title: {
-    ...CommonStyles.normalText,
     textAlign: "center",
-    marginBottom: CommonSizes.spacing.extraSmall,
+    marginBottom: CommonSizes.spacing.mediumPlus,
+    color: colors.text,
   } as TextStyle,
   description: {
-    ...CommonStyles.normalText,
-    color: platformNativeColor(PlatformColorsIOS.systemBlue, PlatformColorsAndroid.primary),
     textAlign: "center",
-    textDecorationLine: "underline",
-  } as TextStyle,
-});
+    color: colors.secondaryText,
+  },
+  image: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    alignSelf: "center",
+  } as ImageStyle,
+  loader: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: "center",
+  },
+}));

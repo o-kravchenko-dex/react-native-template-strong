@@ -1,9 +1,19 @@
 import dayjs from "dayjs";
 // eslint-disable-next-line import/no-unassigned-import
 import "dayjs/locale/en";
+// eslint-disable-next-line import/no-unassigned-import
+import "dayjs/locale/ru";
 import calendar from "dayjs/plugin/calendar";
-import {ICalendarSpec} from "../../types";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import utc from 'dayjs/plugin/utc';
+import relativeTime from "dayjs/plugin/relativeTime";
+import {getI18n} from "react-i18next";
+import {ICalendarSpec} from "~/types";
+
 dayjs.extend(calendar);
+dayjs.extend(relativeTime);
+dayjs.extend(customParseFormat);
+dayjs.extend(utc);
 
 export enum DateFormat {
   dayMonthShortYear = "DD.MM.YYYY",
@@ -23,6 +33,7 @@ export enum DateFormat {
   full = "YYYY-MM-DD HH:mm:ss",
   yearDateTime = "YYYY.MM.DD HH:mm",
   yearMonthDay = "YYYY.MM.DD",
+  yearMonthDaySpartak = 'YYYY-MM-DD'
 }
 
 const calendarFormat: ICalendarSpec = {
@@ -75,7 +86,26 @@ export function calendarDate(date: Date | null | number | undefined | string, wi
   return result;
 }
 
-export function setDateLocale(locale?: string): void {
+export function relativeDateFrom(date: Date | null | number | undefined | string): string {
+  let result = "";
+
+  const formattedDate: Date | null = dateFromUnknown(date);
+  if (formattedDate) {
+    const dateInJs = dayjs(formattedDate);
+
+    if (dayjs().subtract(1, "d").isBefore(date)) {
+      result = dateInJs.fromNow();
+    } else if (dayjs().subtract(2, "d").isBefore(date)) {
+      result = dateInJs.format(`[${getI18n().t("date.yesterdayAt")}] HH:mm`);
+    } else {
+      result = dateInJs.format(getI18n().t("date.calendarFormat"));
+    }
+  }
+
+  return result;
+}
+
+export function setDateLocale(locale: string): void {
   dayjs.locale(locale);
 }
 

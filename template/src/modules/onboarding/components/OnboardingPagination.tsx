@@ -1,22 +1,41 @@
 import React, {FC, memo} from "react";
-import {StyleSheet, View, ViewStyle} from "react-native";
-import {platformNativeColor} from "../../../common/helpers/colorHelpers";
-import {PlatformColorsAndroid} from "../../../core/theme/colors";
-import {CommonSizes} from "../../../core/theme/commonSizes";
+import {StyleSheet, TouchableOpacity, View, ViewStyle} from "react-native";
+import {Colors} from "~/core/theme/colors";
+import {CommonSizes} from "~/core/theme/commonSizes";
+import {isAndroid} from "~/core/theme/commonConsts";
+import {Brand} from "~/infrastructure";
 
 interface IProps {
   totalItems: number;
   activeIndex: number;
+  onSkipPress?: () => void;
+  isTicketCard?: boolean;
 }
 
-export const OnboardingPagination: FC<IProps> = memo(({activeIndex, totalItems}) => {
+export const OnboardingPagination: FC<IProps> = memo(({activeIndex, totalItems, onSkipPress, isTicketCard}) => {
   const dots = [];
 
   for (let i = 0; i < totalItems; i++) {
-    dots.push(<View key={i} style={activeIndex == i ? styles.activeIcon : styles.inactiveIcon} />);
+    dots.push(<View
+      key={i}
+      style={activeIndex == i ? (isTicketCard ? [styles.activeIcon, {backgroundColor: Colors.secondary}] : styles.activeIcon)
+        : (isTicketCard ? [styles.inactiveIcon, {backgroundColor: Colors.secondary, opacity: 0.6}] : styles.inactiveIcon)}
+    />);
   }
 
-  return <View style={styles.container}>{dots}</View>;
+  return (
+    <View style={styles.wrapper}>
+      <Brand.H4 style={styles.skipLabel} color={Colors.transparent} labelKey={"common.skip"} />
+      <View style={isTicketCard ? [styles.container, styles.containerAbsolute] : [styles.container, {...commonPaddings}]}>{dots}</View>
+      {
+        !isTicketCard ? (
+          <TouchableOpacity onPress={onSkipPress} activeOpacity={0.7}>
+            <Brand.H4 style={styles.skipLabel} color={Colors.white} labelKey={"common.skip"} />
+          </TouchableOpacity>
+        ) : null
+      }
+    </View>
+  );
 });
 
 /**
@@ -24,30 +43,43 @@ export const OnboardingPagination: FC<IProps> = memo(({activeIndex, totalItems})
  * when setting borderRadius and background with PlatformColor
  */
 const commonIcon: ViewStyle = {
-  width: 10,
-  height: 10,
-  borderRadius: 5,
-  borderTopLeftRadius: 5,
-  borderTopRightRadius: 5,
-  borderBottomLeftRadius: 5,
-  borderBottomRightRadius: 5,
-  marginHorizontal: CommonSizes.spacing.extraSmall,
+  width: CommonSizes.spacing.medium,
+  height: 1,
+  marginHorizontal: CommonSizes.spacing.extraSmall / 2,
+};
+
+const commonPaddings = {
+  marginTop: isAndroid ? CommonSizes.spacing.medium : undefined,
+  marginHorizontal: CommonSizes.spacing.medium,
+  paddingVertical: isAndroid ? CommonSizes.spacing.mediumPlus : CommonSizes.spacing.medium,
 };
 
 const styles = StyleSheet.create({
+  wrapper: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  } as ViewStyle,
   container: {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: CommonSizes.spacing.mediumPlus,
   } as ViewStyle,
+  containerAbsolute: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+  } as ViewStyle,
+  skipLabel: {...commonPaddings} as ViewStyle,
   activeIcon: {
     ...commonIcon,
-    backgroundColor: platformNativeColor(undefined, PlatformColorsAndroid.primary),
+    backgroundColor: Colors.white,
+    height: 2,
   } as ViewStyle,
   inactiveIcon: {
     ...commonIcon,
-    backgroundColor: platformNativeColor(undefined, PlatformColorsAndroid.secondaryText),
+    backgroundColor: `${Colors.white}cc`,
   } as ViewStyle,
 });

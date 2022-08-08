@@ -1,9 +1,18 @@
 import {Pages} from "./pages";
-import {Navigation} from "react-native-navigation";
+import {LayoutBottomTabs, Navigation} from "react-native-navigation";
 import {Tabs} from "./tabs";
-import {localization} from "../common/localization/localization";
-import {SFSymbols} from "../../resources/symbols/SFSymbols";
-import {getPlatformTabsIcon} from "./helpers/navigationIconHelpers";
+import {TabbarDarkResources, TabbarInactiveResources, TabbarLightResources} from "~/common/ImageResources.g";
+import {i18next} from "~/common/localization/localization";
+import {ImageURISource} from "react-native";
+import {DarkThemeColors, LightThemeColors, ThemeColors} from "~/core/theme/colors";
+
+interface ITabBarIconSet {
+  bag: ImageURISource;
+  date: ImageURISource;
+  home: ImageURISource;
+  menu: ImageURISource;
+  news: ImageURISource;
+}
 
 export function setStorybookRoot() {
   Navigation.setRoot({
@@ -15,7 +24,7 @@ export function setStorybookRoot() {
           topBar: {
             visible: true,
             title: {
-              text: localization.pages.storybook,
+              text: i18next.t("pages.storybook"),
             },
           },
         },
@@ -40,8 +49,8 @@ export function setInitialRoot() {
   });
 }
 
-export function setOnboardingRoot() {
-  Navigation.setRoot({
+export async function setOnboardingRoot() {
+  return Navigation.setRoot({
     root: {
       component: {
         name: Pages.onboarding.name,
@@ -56,71 +65,114 @@ export function setOnboardingRoot() {
   });
 }
 
-export function setTabsRoot(callback?: () => void) {
-  Navigation.setRoot({
-    root: {
-      bottomTabs: {
-        id: Pages.tabs.id,
+export const bottomTabsLayout = (iconSet: ITabBarIconSet, colors: ThemeColors): LayoutBottomTabs => ({
+  id: Pages.tabs.id,
+  children: [
+    {
+      stack: {
+        id: Tabs.main.id,
         children: [
           {
-            stack: {
-              id: Tabs.main.id,
-              children: [
-                {
-                  component: {
-                    id: Pages.main.id,
-                    name: Pages.main.name,
-                  },
-                },
-              ],
-              options: {
-                bottomTab: {
-                  text: localization.pages.main,
-                  ...getPlatformTabsIcon(SFSymbols["house"], SFSymbols["house.fill"], "home"),
-                },
-              },
-            },
-          },
-          {
-            stack: {
-              id: Tabs.search.id,
-              children: [
-                {
-                  component: {
-                    id: Pages.search.id,
-                    name: Pages.search.name,
-                  },
-                },
-              ],
-              options: {
-                bottomTab: {
-                  text: localization.pages.search,
-                  ...getPlatformTabsIcon(SFSymbols["magnifyingglass"], SFSymbols["magnifyingglass"], "search"),
-                },
-              },
-            },
-          },
-          {
-            stack: {
-              id: Tabs.settings.id,
-              children: [
-                {
-                  component: {
-                    id: Pages.settings.id,
-                    name: Pages.settings.name,
-                  },
-                },
-              ],
-              options: {
-                bottomTab: {
-                  text: localization.pages.settings,
-                  ...getPlatformTabsIcon(SFSymbols["gearshape"], SFSymbols["gearshape.fill"], "settings"),
-                },
-              },
+            component: {
+              id: Pages.main.id,
+              name: Pages.main.name,
             },
           },
         ],
+        options: {
+          bottomTab: {
+            text: i18next.t("pages.main"),
+            icon: TabbarInactiveResources.home,
+            iconColor: colors.secondaryText,
+            selectedIcon: iconSet.home,
+            selectedIconColor: null,
+          },
+        },
       },
     },
-  }).then(callback);
-}
+    {
+      stack: {
+        id: Tabs.search.id,
+        children: [
+          {
+            component: {
+              id: Pages.search.id,
+              name: Pages.search.name,
+            },
+          },
+        ],
+        options: {
+          bottomTab: {
+            text: i18next.t("pages.search"),
+            icon: TabbarInactiveResources.news,
+            iconColor: colors.secondaryText,
+            selectedIcon: iconSet.home,
+            selectedIconColor: null,
+          },
+        },
+      },
+    },
+    {
+      stack: {
+        id: Tabs.settings.id,
+        children: [
+          {
+            component: {
+              id: Pages.settings.id,
+              name: Pages.settings.name,
+            },
+          },
+        ],
+        options: {
+          bottomTab: {
+            text: i18next.t("pages.settings"),
+            icon: TabbarInactiveResources.menu,
+            iconColor: colors.secondaryText,
+            selectedIcon: iconSet.home,
+            selectedIconColor: null,
+          },
+        },
+      },
+    },
+    {
+      stack: {
+        id: Tabs.menu.id,
+        children: [
+          {
+            component: {
+              id: Pages.menu.id,
+              name: Pages.menu.name,
+            },
+          },
+        ],
+        options: {
+          bottomTab: {
+            text: i18next.t("pages.settings"),
+            icon: TabbarInactiveResources.menu,
+            iconColor: colors.secondaryText,
+            selectedIcon: iconSet.menu,
+            selectedIconColor: null,
+          },
+        },
+      },
+    },
+  ],
+});
+
+export const getTabsRootLayout = (theme: "light" | "dark") => {
+  let iconSet: ITabBarIconSet;
+  let colors: ThemeColors;
+  if (theme == "light") {
+    iconSet = TabbarLightResources;
+    colors = LightThemeColors;
+  } else {
+    iconSet = TabbarDarkResources;
+    colors = DarkThemeColors;
+  }
+
+  return {
+    root: {
+      bottomTabs: bottomTabsLayout(iconSet, colors),
+    },
+  };
+};

@@ -1,21 +1,23 @@
-import {ActivityIndicator, Text, View} from "react-native";
+import {ActivityIndicator, StyleProp, View, ViewStyle} from "react-native";
 import React from "react";
-import {localization} from "../localization/localization";
-import {CommonStyles} from "../../core/theme/commonStyles";
-import {PlatformColorsAndroid, PlatformColorsIOS} from "../../core/theme/colors";
-import {platformNativeColor} from "../helpers/colorHelpers";
+import {useThemeColors} from "~/core/theme/hooks";
+import {CommonStyles} from "~/core/theme/commonStyles";
 
-export const LoadingComponent = () => {
+interface IProps {
+  containerStyle?: StyleProp<ViewStyle>;
+  size?: "small" | "large";
+}
+
+export const LoadingComponent = ({containerStyle, size}: IProps) => {
+  const colors = useThemeColors();
+
   return (
-    <View style={CommonStyles.flexCenter}>
+    <View style={containerStyle || CommonStyles.flexCenter}>
       <ActivityIndicator
         animating={true}
-        color={platformNativeColor(PlatformColorsIOS.label, PlatformColorsAndroid.primary)}
-        size={"small"}
+        color={colors.main}
+        size={size || "small"}
       />
-      <Text style={CommonStyles.normalText} numberOfLines={1}>
-        {localization.common.loading}
-      </Text>
     </View>
   );
 };

@@ -1,12 +1,17 @@
 import {Platform, StyleSheet, TextStyle, ViewStyle} from "react-native";
 import {Fonts} from "./fonts";
-import {PlatformColorsAndroid, PlatformColorsIOS} from "./colors";
 import {CommonSizes} from "./commonSizes";
-import {platformNativeColor} from "../../common/helpers/colorHelpers";
+import {Colors} from "~/core/theme/colors";
 
 export const CommonStyles = StyleSheet.create({
   flex1: {
     flex: 1,
+  } as ViewStyle,
+  flexGrow: {
+    flexGrow: 1,
+  } as ViewStyle,
+  flexShrink: {
+    flexShrink: 1,
   } as ViewStyle,
   flex1Padding: {
     flex: 1,
@@ -25,11 +30,14 @@ export const CommonStyles = StyleSheet.create({
   } as ViewStyle,
   flexPlatformBackground: {
     flex: 1,
-    backgroundColor: platformNativeColor(PlatformColorsIOS.secondarySystemBackground, PlatformColorsAndroid.background),
+    backgroundColor: Colors.white,
   } as ViewStyle,
   rowCenter: {
     flexDirection: "row",
     alignItems: "center",
+  } as ViewStyle,
+  row: {
+    flexDirection: "row",
   } as ViewStyle,
   columnAlignStart: {
     flexDirection: "column",
@@ -47,6 +55,19 @@ export const CommonStyles = StyleSheet.create({
       } as ViewStyle,
     }),
   } as ViewStyle,
+  shadowTopBar: {
+    ...Platform.select({
+      ios: {
+        shadowOffset: {height: 8, width: 0},
+        shadowOpacity: 1,
+        shadowRadius: 12,
+        shadowColor: "rgba(0.22, 0.27, 0.28, 0.08)",
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
+  },
   iPhoneXFooter: {
     height: 20,
   } as ViewStyle,
@@ -54,6 +75,9 @@ export const CommonStyles = StyleSheet.create({
     fontFamily: Fonts.system,
     fontSize: CommonSizes.font.medium,
     lineHeight: CommonSizes.lineHeight.medium,
-    color: platformNativeColor(PlatformColorsIOS.label, PlatformColorsAndroid.primaryText),
+    color: Colors.black,
   } as TextStyle,
+  noTextTransform: {
+    textTransform: "none",
+  },
 });
