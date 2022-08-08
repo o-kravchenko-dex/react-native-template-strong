@@ -30,6 +30,7 @@ const translationGetters: {[key: string]: (() => typeof en & typeof ru) | undefi
 i18n
   .use(initReactI18next)
   .init({
+    compatibilityJSON: 'v3',
     resources: {},
     fallbackLng,
     interpolation: {escapeValue: false},

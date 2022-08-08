@@ -9,7 +9,7 @@ import {windowHeight} from "~/core/theme/commonConsts";
 import {CommonStyles} from "~/core/theme/commonStyles";
 import {ImageResources} from "~/common/ImageResources.g";
 import {CustomInput} from "~/common/components/CustomInput";
-import {ItemIdNameDto} from "~/common/api/dto";
+import {ItemIdNameDto} from "~/infrastructure/dto/common";
 
 interface IProps {
   selectableItems: ItemIdNameDto[] | undefined;

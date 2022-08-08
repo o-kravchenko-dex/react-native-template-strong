@@ -65,7 +65,8 @@
       "datesCantBeEqual": "{{fromField}} and {{toField}} can't be equal",
       "mobileDataIsTurnedOff": "Mobile Data is Turned Off",
       "turnOnMobileData": "Turn on mobile data or use Wi-Fi to access data.",
-      "error": "Error"
+      "error": "Error",
+      "validationError": "Validation error occurred"
     },
     "onboarding": {
       "welcomeToApp": "",
@@ -171,7 +172,8 @@
       "passwordFormat": "Password must be at least 8 characters long, consist of Latin characters, contain lowercase and uppercase letters and numbers",
       "nameFormat": "Must be between 1 and 50 characters long",
       "emailFormat": "The entered value should match a@a.aa format",
-      "loginFormat": "Invalid username format"
+      "loginFormat": "Invalid username format",
+      "optional": "Optional field"
     },
     "menu": {
       "enter": "Login",

@@ -14,7 +14,6 @@ import {ThemeColors} from "~/core/theme/colors";
 import {FetchBaseQueryError} from "@reduxjs/toolkit/dist/query/react";
 import {SerializedError} from "@reduxjs/toolkit";
 import {ErrorComponent} from "~/common/components/ErrorComponent";
-import {ru} from "~/common/localization/translations/ru";
 
 type Props = {
   onPress?: () => void;
@@ -63,7 +62,7 @@ export const TryAgain: FC<Props> = memo((props) => {
 
   return (
     <View style={styles.container}>
-      {Number(queryError?.status) && ru.translation.errors.status.hasOwnProperty(queryError.status)
+      {Number(queryError?.status)
         ? <ErrorComponent
           error={queryError}
           isLoading={isLoading}

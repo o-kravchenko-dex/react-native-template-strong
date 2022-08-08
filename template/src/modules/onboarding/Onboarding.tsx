@@ -1,9 +1,9 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
-import {Alert, ImageBackground, Linking, SafeAreaView, StyleSheet, TextStyle, View, ViewStyle} from "react-native";
+import {ImageBackground, SafeAreaView, StyleSheet, TextStyle, View, ViewStyle} from "react-native";
 import Carousel from "react-native-snap-carousel";
 import {NavigationFunctionComponent} from "react-native-navigation";
 import {useTranslation} from "react-i18next";
-import {firebase} from "@react-native-firebase/messaging";
+// import {firebase} from "@react-native-firebase/messaging";
 import {OnboardingPagination} from "./components/OnboardingPagination";
 import {CommonSizes} from "~/core/theme/commonSizes";
 import {getTabsRootLayout} from "~/navigation/roots";
@@ -11,23 +11,19 @@ import {Colors} from "~/core/theme/colors";
 import {windowWidth} from "~/core/theme/commonConsts";
 import {PrimaryButton} from "~/common/components/PrimaryButton";
 import {OnboardingResources} from "~/common/ImageResources.g";
-import {showAlert} from "~/common/helpers/dialogsHelpers";
 import {CommonStyles} from "~/core/theme/commonStyles";
-import {useAppState} from "~/common/hooks/useAppState";
 import {useAppDispatch, useAppSelector} from "~/core/store/store";
 import {ButtonType, IOnboardingButton, IOnboardingData} from "~/types";
 import {useHideSplash} from "../splash/useHideSplash";
-import {analytics, navigation} from "~/services";
-import {Brand, logger, Regular} from "~/infrastructure";
-import {Pages} from "~/navigation/pages";
+import {navigation} from "~/services";
+import {Brand, Regular} from "~/infrastructure";
 import {SystemActions} from "~/core/store/system/systemSlice";
 import {useMount} from "~/common/hooks/useMount";
-import {Tabs} from "~/navigation/tabs";
 
 export const Onboarding: NavigationFunctionComponent = () => {
   const carouselRef = useRef<Carousel<any> | null>(null);
   const [activeSlide, setActiveSlide] = useState<number>(0);
-  const [messagingStatus, setMessagingStatus] = useState<number>(0);
+  // const [messagingStatus, setMessagingStatus] = useState<number>(0);
   const [carouselData, setCarouselData] = useState<IOnboardingData[]>([]);
   const [appTheme, deviceTheme] = useAppSelector(state => [
     state.system.appTheme,
@@ -94,23 +90,24 @@ export const Onboarding: NavigationFunctionComponent = () => {
   }, []);
 
   const onLogin = useCallback(async () => {
-    analytics.logEvent("onboarding_login");
+    // analytics.logEvent("onboarding_login");
     await navigation.setRootAsync(getTabsRootLayout(appTheme || deviceTheme || "dark"));
-    await navigation.navigateWithoutTabsAsync(Pages.login, {
+/*    await navigation.navigateWithoutTabsAsync(Pages.login, {
       params: {
         afterLoginCallback: () => navigation.updateOptions({bottomTabs: {currentTabId: Tabs.main.id}}),
       },
-    });
+    });*/
+    //todo add when login screen will implemented and analytics
   }, [appTheme, deviceTheme]);
 
   const onRegistration = useCallback(async () => {
-    analytics.logEvent("onboarding_registration");
+    // analytics.logEvent("onboarding_registration");
     await navigation.setRootAsync(getTabsRootLayout(appTheme || deviceTheme || "dark"));
     // await navigation.navigateWithoutTabsAsync(Pages.signUp);
-    //todo add navigation on signup
+    //todo add navigation on signup and analytics
   }, [appTheme, deviceTheme]);
 
-  const onMessagingStatus = useCallback((status: number) => {
+ /* const onMessagingStatus = useCallback((status: number) => {
     setMessagingStatus(status);
     if (status >= 1) {
       setCarouselData(data => {
@@ -139,9 +136,9 @@ export const Onboarding: NavigationFunctionComponent = () => {
         return newData;
       });
     }
-  }, [setMessagingStatus, t]);
+  }, [setMessagingStatus, t]);*/
 
-  const checkPermissions = useCallback(() => {
+  /*const checkPermissions = useCallback(() => {
     firebase.messaging().hasPermission()
       .then((value) => onMessagingStatus(value))
       .catch((error) => {
@@ -151,11 +148,11 @@ export const Onboarding: NavigationFunctionComponent = () => {
 
   useEffect(() => {
     checkPermissions();
-  }, [checkPermissions]);
+  }, [checkPermissions]);*/
 
-  useAppState({onForeground: checkPermissions});
+  // useAppState({onForeground: checkPermissions});
 
-  const onRequestNotifications = useCallback(() => {
+ /* const onRequestNotifications = useCallback(() => {
     if (messagingStatus == -1) {
       firebase.messaging().requestPermission()
         .then((value) => {
@@ -184,7 +181,7 @@ export const Onboarding: NavigationFunctionComponent = () => {
       }]);
     }
 
-  }, [messagingStatus, onMessagingStatus, t]);
+  }, [messagingStatus, onMessagingStatus, t]);*/
 
   const renderButton = useCallback((button: IOnboardingButton) => {
     let buttonStyle: ViewStyle;
@@ -203,7 +200,7 @@ export const Onboarding: NavigationFunctionComponent = () => {
         handler = onNextPress;
         break;
       case "allowPush":
-        handler = onRequestNotifications;
+        handler = () => console.log('ALLOW PUSH');
         break;
       case "register":
         handler = onRegistration;
@@ -225,7 +222,7 @@ export const Onboarding: NavigationFunctionComponent = () => {
         onPress={handler}
       />
     );
-  }, [onLogin, onNextPress, onRegistration, onRequestNotifications]);
+  }, [onLogin, onNextPress, onRegistration]);
 
   const carouselItem = useCallback((baseData: {item: unknown; index: number; dataIndex: number}) => {
     const item = baseData.item as IOnboardingData;
@@ -247,7 +244,7 @@ export const Onboarding: NavigationFunctionComponent = () => {
   }, [renderButton]);
 
   const onSkipOnboarding = useCallback(() => {
-    analytics.logEvent("skip_onboarding", {activeSlide: activeSlide + 1});
+    // analytics.logEvent("skip_onboarding", {activeSlide: activeSlide + 1});
     navigation.setRoot(getTabsRootLayout(appTheme || deviceTheme || "dark"));
   }, [activeSlide, appTheme, deviceTheme]);
 

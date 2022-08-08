@@ -15,6 +15,7 @@ class NavigationService {
         Tabs.main,
         Tabs.search,
         Tabs.settings,
+        Tabs.menu
       ];
 
       this.stackId = tabIds[event.selectedTabIndex].id;

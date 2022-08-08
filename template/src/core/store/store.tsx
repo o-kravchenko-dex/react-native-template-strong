@@ -6,6 +6,7 @@ import {Provider, TypedUseSelectorHook, useDispatch, useSelector} from "react-re
 import {PersistGate} from "redux-persist/integration/react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {setLanguage} from "~/common/localization/localization";
+import {createLogger, ReduxLoggerOptions} from "redux-logger";
 
 const persistConfig: PersistConfig<RootState> = {
   key: "root",
@@ -14,6 +15,15 @@ const persistConfig: PersistConfig<RootState> = {
   timeout: 1000,
 };
 
+const options: ReduxLoggerOptions = {
+  diff: true,
+  collapsed: true,
+  predicate: (): boolean => {
+    return __DEV__;
+  },
+};
+const logger = createLogger(options);
+
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
@@ -21,10 +31,17 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }),
+    }).concat(logger)
 });
 
-const persistor = persistStore(store);
+export const persistor = persistStore(
+  store,
+  undefined,
+  async () => {
+    const state: RootState = store.getState();
+    await setLanguage(state.system.language);
+  }
+);
 
 type AppDispatch = typeof store.dispatch;
 export type AppThunk = ThunkAction<void, RootState, unknown, Action<string>>;

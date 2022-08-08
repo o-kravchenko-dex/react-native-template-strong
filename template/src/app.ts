@@ -15,5 +15,6 @@ export function initializeApp() {
   Navigation.events().registerAppLaunchedListener(async () => {
     Navigation.dismissAllModals();
     setInitialRoot();
+    setDefaultOptions();
   });
 }

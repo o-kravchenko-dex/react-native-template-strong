@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
   } as TextStyle,
   focusedInputContainer: {
     ...commonInputContainer,
-    borderColor: Colors.darkGray,
+    borderColor: Colors.black,
   } as TextStyle,
   label: {
     paddingBottom: CommonSizes.spacing.extraSmall,

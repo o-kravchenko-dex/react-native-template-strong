@@ -1,22 +1,24 @@
 import "react-native-gesture-handler";
 import {initializeApp} from "./src/app";
-
-if (__DEV__) {
-  // temp fix for the promise.finally
-  // https://github.com/storybookjs/storybook/issues/8371
-  const fn = Promise.prototype.finally;
-  const {configure} = require("@storybook/react-native");
-  Promise.prototype.finally = fn;
-
-  require("@storybook/addon-ondevice-knobs/register");
-  require("@storybook/addon-ondevice-actions/register");
-  configure(() => {
-    require("./storybook/stories.ts");
-  }, module);
-
-  const DevMenu = require("react-native-dev-menu");
-  const {showStorybook} = require("./src/services/navigationService/showStorybook");
-  DevMenu.addItem("Storybook", showStorybook);
-}
+import {isDev} from "./src/core/theme/commonConsts";
+//
+// if (isDev) {
+//   const DevMenu = require("react-native-dev-menu");
+// }
+//
+// // noinspection JSUnresolvedVariable
+// if (global.HermesInternal) {
+//   if (typeof Intl === "undefined") {
+//     require("intl")
+//     require("intl/locale-data/jsonp/ru")
+//     require("intl/locale-data/jsonp/en")
+//   }
+//   require('@formatjs/intl-locale').default;
+//   require('@formatjs/intl-locale/polyfill').default;
+//
+//   require("@formatjs/intl-pluralrules/polyfill").default;
+//   require("@formatjs/intl-pluralrules/locale-data/ru").default;
+//   require("@formatjs/intl-pluralrules/locale-data/en").default;
+// }
 
 initializeApp();

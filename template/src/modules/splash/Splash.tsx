@@ -4,7 +4,6 @@ import {getTabsRootLayout, setOnboardingRoot} from "~/navigation/roots";
 import {useAppSelector} from "~/core/store/store";
 import {LoadingComponent} from "~/common/components/LoadingComponent";
 import {navigation} from "~/services";
-import {dynamicLink} from "~/services/dynamicLinkService";
 
 export const Splash: NavigationFunctionComponent = () => {
   const [appTheme, deviceTheme, isOnboardingVisited] = useAppSelector(state => [
@@ -17,7 +16,7 @@ export const Splash: NavigationFunctionComponent = () => {
     if (isOnboardingVisited) {
       navigation.setRoot(getTabsRootLayout(appTheme || deviceTheme || "dark"));
       // .then(async () => dynamicLink.init());
-      (async () => dynamicLink.init())();
+      // (async () => dynamicLink.init())();
     } else {
       (async () => setOnboardingRoot())();
     }
