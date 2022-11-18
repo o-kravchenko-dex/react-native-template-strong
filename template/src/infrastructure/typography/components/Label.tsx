@@ -22,12 +22,13 @@ export const Label: FC<ILabelProps> = memo((props) => {
   const {t} = useTranslation();
   const style = useMemo(
     () => {
-      const baseStyle: TextStyle = _.get(config, `${props.type}.${props.size}`, null);
+      let baseStyle: TextStyle | null = _.get(config, `${props.type}.${props.size}`, null);
 
       if (!baseStyle) {
         logger?.warn(`${props.type} style of size ${props.size} where not found`, {
           stack: new Error("debug error").stack,
         });
+        baseStyle = {} as TextStyle;
       }
 
       switch (props.weight) {

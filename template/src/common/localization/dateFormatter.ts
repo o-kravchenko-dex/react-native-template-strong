@@ -33,7 +33,6 @@ export enum DateFormat {
   full = "YYYY-MM-DD HH:mm:ss",
   yearDateTime = "YYYY.MM.DD HH:mm",
   yearMonthDay = "YYYY.MM.DD",
-  yearMonthDaySpartak = 'YYYY-MM-DD'
 }
 
 const calendarFormat: ICalendarSpec = {

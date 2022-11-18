@@ -27,6 +27,7 @@ interface IProps {
   radiusless?: boolean;
   alwaysShowTitle?: boolean;
   headerAppearanceDistance?: number;
+  children: React.ReactNode | React.ReactNode[];
 }
 
 const AnimatedKeyboardAwareScrollView = Animated.createAnimatedComponent(KeyboardAwareScrollView);
