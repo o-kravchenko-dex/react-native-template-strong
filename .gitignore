@@ -4,3 +4,4 @@ node_modules/
 .DS_Store
 /template/package-lock.json
 /template/ios/Podfile.lock
+**/customPackagerIp.txt
