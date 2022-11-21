@@ -1,10 +1,16 @@
 import "react-native-gesture-handler";
 import {initializeApp} from "./src/app";
+import { NativeModules } from "react-native";
 import {isDev} from "./src/core/theme/commonConsts";
-//
-// if (isDev) {
-//   const DevMenu = require("react-native-dev-menu");
-// }
+import {isIos} from "react-native-modalize/lib/utils/devices";
+
+if (isDev) {
+  const DevMenu = require("react-native-dev-menu");
+  if (isIos) {
+      DevMenu.addItem("iOS debugging: Enable", () => NativeModules.DevSettings.setIsDebuggingRemotely(true));
+      DevMenu.addItem("iOS debugging: Disable", () => NativeModules.DevSettings.setIsDebuggingRemotely(false));
+  }
+}
 //
 // // noinspection JSUnresolvedVariable
 // if (global.HermesInternal) {
