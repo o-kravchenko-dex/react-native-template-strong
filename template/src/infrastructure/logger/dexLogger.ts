@@ -35,8 +35,8 @@ function createDexLoggerWriter(category?: string) {
   }
 
   const categories = category
-    ? ["FC_Spartak.Mobile", `FC_Spartak.Mobile.${category}`]
-    : ["FC_Spartak.Mobile"];
+    ? ["com.helloworld", `com.helloworld.${category}`]
+    : ["com.helloworld"];
 
   return new DexLoggerImpl(writers, categories);
 }

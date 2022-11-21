@@ -64,7 +64,7 @@ public class MainApplication extends NavigationApplication {
 
         I18nUtil sharedI18nUtilInstance = I18nUtil.getInstance();
         sharedI18nUtilInstance.allowRTL(this, true);
-        initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+        // initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
         registerActivityLifecycleCallbacks(OrientationActivityLifecycle.getInstance());
     }
 
@@ -83,7 +83,7 @@ public class MainApplication extends NavigationApplication {
          We use reflection here to pick up the class that initializes Flipper,
         since Flipper library is not available in release mode
         */
-                Class<?> aClass = Class.forName("com.fc_spartak.ReactNativeFlipper");
+                Class<?> aClass = Class.forName("com.helloworld.ReactNativeFlipper");
                 aClass
                         .getMethod("initializeFlipper", Context.class, ReactInstanceManager.class)
                         .invoke(null, context, reactInstanceManager);

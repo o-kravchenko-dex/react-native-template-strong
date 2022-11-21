@@ -8,12 +8,12 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTLinkingManager.h>
 
-#import <Firebase.h>
+// #import <Firebase.h>
 #import <UserNotifications/UserNotifications.h>
 #import <RNCPushNotificationIOS.h>
 
-#import "TestConfigurationProvider.h"
-#import "SetIpView.h"
+#import "TestConfiguration/TestConfigurationProvider.h"
+// #import "TestConfiguration/SetIpView.h"
 
 #import <React/RCTI18nUtil.h>
 #import <ReactNativeNavigation/ReactNativeNavigation.h>
@@ -54,9 +54,9 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
   _bridgeAdapter = [[RCTSurfacePresenterBridgeAdapter alloc] initWithBridge:bridge contextContainer:_contextContainer];
   bridge.surfacePresenter = _bridgeAdapter.surfacePresenter;
 #endif
-  if ([FIRApp defaultApp] == nil) {
-    [FIRApp configure];
-  }
+  // if ([FIRApp defaultApp] == nil) {
+  //   [FIRApp configure];
+  // }
 
   #if RCT_DEV
     [bridge moduleForClass:[RCTDevLoadingView class]];
@@ -64,10 +64,10 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
   [ReactNativeNavigation bootstrapWithBridge:bridge];
   [[RCTI18nUtil sharedInstance] allowRTL:YES];
-  [Splash showWithGreetings:bridge];
+  [Splash show:bridge];
   // Define UNUserNotificationCenter
-  UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-  center.delegate = self;
+  // UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+  // center.delegate = self;
 
   [Orientation setOrientation:(UIInterfaceOrientationMask)UIInterfaceOrientationMaskPortrait];
 
