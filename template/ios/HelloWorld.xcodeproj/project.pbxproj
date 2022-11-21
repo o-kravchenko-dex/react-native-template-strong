@@ -15,6 +15,9 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		8430F4E2292B52C400AA5F51 /* customPackagerIp.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8430F4E1292B52C400AA5F51 /* customPackagerIp.txt */; };
 		8430F4EA292B58C200AA5F51 /* TestConfigurationProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 8430F4E8292B58C200AA5F51 /* TestConfigurationProvider.m */; };
+		8430F4EF292B67F300AA5F51 /* splash.m in Sources */ = {isa = PBXBuildFile; fileRef = 8430F4EC292B67F300AA5F51 /* splash.m */; };
+		8430F4F0292B67F300AA5F51 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 8430F4EE292B67F300AA5F51 /* .gitignore */; };
+		8430F4F3292B68E400AA5F51 /* SetIpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8430F4F1292B68E400AA5F51 /* SetIpView.m */; };
 		A0F7D60075A8401690798073 /* SF PRO DISPLAY LIGHT ITALIC.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 15B65F37ED4C40D38E37F4E6 /* SF PRO DISPLAY LIGHT ITALIC.OTF */; };
 		A2FBF89907D745BEBA7AA122 /* SF PRO DISPLAY BOLD.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 7904674469CB42428EF848E0 /* SF PRO DISPLAY BOLD.OTF */; };
 		AEDC4BAFCE8378B0673B1883 /* libPods-HelloWorld.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CA9E7F032F387DCB3B9AD2FB /* libPods-HelloWorld.a */; };
@@ -54,6 +57,11 @@
 		8430F4E1292B52C400AA5F51 /* customPackagerIp.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = customPackagerIp.txt; path = HelloWorld/customPackagerIp.txt; sourceTree = "<group>"; };
 		8430F4E6292B58C200AA5F51 /* TestConfigurationProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestConfigurationProvider.h; sourceTree = "<group>"; };
 		8430F4E8292B58C200AA5F51 /* TestConfigurationProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestConfigurationProvider.m; sourceTree = "<group>"; };
+		8430F4EC292B67F300AA5F51 /* splash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = splash.m; sourceTree = "<group>"; };
+		8430F4ED292B67F300AA5F51 /* splash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = splash.h; sourceTree = "<group>"; };
+		8430F4EE292B67F300AA5F51 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		8430F4F1292B68E400AA5F51 /* SetIpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetIpView.m; sourceTree = "<group>"; };
+		8430F4F2292B68E400AA5F51 /* SetIpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetIpView.h; sourceTree = "<group>"; };
 		CA9E7F032F387DCB3B9AD2FB /* libPods-HelloWorld.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HelloWorld.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FA7AD87A6D684EFF80B4B62E /* SF PRO DISPLAY SEMIBOLD ITALIC.OTF */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF PRO DISPLAY SEMIBOLD ITALIC.OTF"; path = "../resources/fonts/SF PRO DISPLAY SEMIBOLD ITALIC.OTF"; sourceTree = "<group>"; };
@@ -110,6 +118,7 @@
 		13B07FAE1A68108700A75B9A /* HelloWorld */ = {
 			isa = PBXGroup;
 			children = (
+				8430F4EB292B67F300AA5F51 /* splash */,
 				8430F4E4292B58C200AA5F51 /* TestConfiguration */,
 				8430F4E1292B52C400AA5F51 /* customPackagerIp.txt */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -167,11 +176,24 @@
 		8430F4E4292B58C200AA5F51 /* TestConfiguration */ = {
 			isa = PBXGroup;
 			children = (
+				8430F4F2292B68E400AA5F51 /* SetIpView.h */,
+				8430F4F1292B68E400AA5F51 /* SetIpView.m */,
 				8430F4E6292B58C200AA5F51 /* TestConfigurationProvider.h */,
 				8430F4E8292B58C200AA5F51 /* TestConfigurationProvider.m */,
 			);
 			name = TestConfiguration;
 			path = HelloWorld/TestConfiguration;
+			sourceTree = "<group>";
+		};
+		8430F4EB292B67F300AA5F51 /* splash */ = {
+			isa = PBXGroup;
+			children = (
+				8430F4EC292B67F300AA5F51 /* splash.m */,
+				8430F4ED292B67F300AA5F51 /* splash.h */,
+				8430F4EE292B67F300AA5F51 /* .gitignore */,
+			);
+			name = splash;
+			path = HelloWorld/splash;
 			sourceTree = "<group>";
 		};
 		D98A54A93F2919F81B11DD6E /* Pods */ = {
@@ -197,7 +219,7 @@
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
 				40EBBD881712576F37C83168 /* [CP] Copy Pods Resources */,
-				C11FC42D19811C85BF1E6752 /* [CP] Embed Pods Frameworks */,
+				1C06A081147BF4BD48E79433 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -220,7 +242,7 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				9701E2F492DE305F2EC58837 /* [CP] Copy Pods Resources */,
-				B0C80CE690E2B4A82ABA67EE /* [CP] Embed Pods Frameworks */,
+				6F07AC94F64A32C59DB42A9F /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -279,6 +301,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8430F4F0292B67F300AA5F51 /* .gitignore in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				A2FBF89907D745BEBA7AA122 /* SF PRO DISPLAY BOLD.OTF in Resources */,
@@ -306,6 +329,23 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
+		1C06A081147BF4BD48E79433 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HelloWorld-HelloWorldTests/Pods-HelloWorld-HelloWorldTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HelloWorld-HelloWorldTests/Pods-HelloWorld-HelloWorldTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HelloWorld-HelloWorldTests/Pods-HelloWorld-HelloWorldTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		40EBBD881712576F37C83168 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -321,6 +361,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HelloWorld-HelloWorldTests/Pods-HelloWorld-HelloWorldTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6F07AC94F64A32C59DB42A9F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HelloWorld/Pods-HelloWorld-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HelloWorld/Pods-HelloWorld-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HelloWorld/Pods-HelloWorld-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9701E2F492DE305F2EC58837 /* [CP] Copy Pods Resources */ = {
@@ -360,40 +417,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B0C80CE690E2B4A82ABA67EE /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HelloWorld/Pods-HelloWorld-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HelloWorld/Pods-HelloWorld-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HelloWorld/Pods-HelloWorld-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C11FC42D19811C85BF1E6752 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HelloWorld-HelloWorldTests/Pods-HelloWorld-HelloWorldTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HelloWorld-HelloWorldTests/Pods-HelloWorld-HelloWorldTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HelloWorld-HelloWorldTests/Pods-HelloWorld-HelloWorldTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F15E2A087B415333C0A44C6F /* [CP] Check Pods Manifest.lock */ = {
@@ -453,7 +476,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
+				8430F4F3292B68E400AA5F51 /* SetIpView.m in Sources */,
 				8430F4EA292B58C200AA5F51 /* TestConfigurationProvider.m in Sources */,
+				8430F4EF292B67F300AA5F51 /* splash.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

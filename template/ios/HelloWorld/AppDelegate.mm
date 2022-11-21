@@ -18,7 +18,7 @@
 #import <React/RCTI18nUtil.h>
 #import <ReactNativeNavigation/ReactNativeNavigation.h>
 #import "Orientation.h"
-// #import "Splash.h"
+#import "Splash.h"
 
 #import <React/RCTAppSetupUtils.h>
 #if RCT_NEW_ARCH_ENABLED
@@ -64,7 +64,7 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
   [ReactNativeNavigation bootstrapWithBridge:bridge];
   [[RCTI18nUtil sharedInstance] allowRTL:YES];
-  // [Splash showWithGreetings:bridge];
+  [Splash show:bridge];
   // Define UNUserNotificationCenter
   // UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
   // center.delegate = self;
