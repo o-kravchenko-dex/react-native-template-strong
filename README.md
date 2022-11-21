@@ -15,3 +15,8 @@ Fork of the [React Native Template Strong](https://github.com/svbutko/react-nati
 [![Twitter Follow](https://img.shields.io/twitter/follow/svbutko?label=Follow%20%40svbutko&style=social)](https://twitter.com/svbutko)
 
 [Original docs here](https://svbutko.github.io/react-native-template-strong/)
+
+Run to start:
+```shell
+npx react-native init MyApp --template https://github.com/dex-it/react-native-template-strong --npm
+```
