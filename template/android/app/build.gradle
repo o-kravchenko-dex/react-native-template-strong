@@ -138,7 +138,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0.0"
+        versionName "0.0.1"
         multiDexEnabled true
         testBuildType System.getProperty("testBuildType", "debug")
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -211,6 +211,28 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+    }
+    flavorDimensions "standard"
+    productFlavors {
+       dev {
+           // applicationIdSuffix ".dev"
+           // resValue "string", "app_name", "HelloWorld - Dev"
+           dimension "standard"
+       }
+       qa {
+          // applicationIdSuffix ".test"
+          // resValue "string", "app_name", "HelloWorld - Test"
+          dimension "standard"
+       }
+       stage {
+           // applicationIdSuffix ".stage"
+           // resValue "string", "app_name", "HelloWorld - Stage"
+           dimension "standard"
+       }
+       prod {
+           // resValue "string", "app_name", "HelloWorld"
+           dimension "standard"
+       }
     }
     buildTypes {
         debug {
@@ -304,6 +326,7 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
 def isNewArchitectureEnabled() {
     // To opt-in for the New Architecture, you can either:
