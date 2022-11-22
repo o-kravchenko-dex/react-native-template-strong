@@ -41,7 +41,7 @@ RCT_EXPORT_MODULE();
     _window.rootViewController = rootViewController;
 
   [Splash show:@"BootSplash" inView:rootViewController];
-  //uncoment line and modify native screen if needed
+  //uncomment next line and modify native screen if needed
   //[Splash setUserGreetings: bridge];
 
     [_window makeKeyAndVisible];
