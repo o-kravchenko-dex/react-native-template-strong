@@ -12,11 +12,9 @@
         <item name="android:windowBackground">@drawable/splash_background</item>
         <item name="android:statusBarColor">@color/statusbar</item>
     </style>
-    <!-- BootTheme should inherit from Theme.SplashScreen -->
-    <style name="BootTheme" parent="Theme.SplashScreen">
-<!--      <item name="windowSplashScreenBackground">@color/bootsplash_background</item>-->
-<!--      <item name="windowSplashScreenAnimatedIcon">@mipmap/bootsplash_logo</item>-->
+    <!-- react-native-bootsplash -->
+    <style name="BootTheme" parent="AppTheme">
+        <!-- set the generated bootsplash.xml drawable as activity background -->
         <item name="android:background">@color/primary</item>
-        <item name="postSplashScreenTheme">@style/AppTheme</item>
     </style>
 </resources>

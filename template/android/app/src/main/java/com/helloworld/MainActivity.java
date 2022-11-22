@@ -5,13 +5,13 @@ import android.os.Bundle;
 import com.reactnativenavigation.NavigationActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
-import com.zoontek.rnbootsplash.RNBootSplash;
+import com.helloworld.Splash;
 
 public class MainActivity extends NavigationActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RNBootSplash.init(this);
+        Splash.showSplashWithGreetings(MainActivity.this, R.layout.launch_screen, R.id.splash_userGreetings);
     }
 
     /**
