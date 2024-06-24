@@ -36,6 +36,7 @@ export const PhotoTakingButton: FC<IProps> = memo(({icon, onPress, backgroundIma
 interface IBackgroundComponentProps {
   image?: ImageURISource | null;
   style?: ImageStyle;
+  children?: React.ReactNode | React.ReactNode[];
 }
 
 const BackgroundComponent: FC<IBackgroundComponentProps> = memo(({image, children, style}) => {

@@ -54,7 +54,7 @@ export const AppWebView: FC<IProps> = memo((props) => {
 
   const onRequest = useCallback((event: ShouldStartLoadRequest) => {
     console.log("onRequest event", {...event});
-    if (event.url.indexOf("spartak.com") < 0) {
+    if (event.url.indexOf("helloworld.com") < 0) {
       new HttpUrl(event.url).tryOpen();
 
       return false;

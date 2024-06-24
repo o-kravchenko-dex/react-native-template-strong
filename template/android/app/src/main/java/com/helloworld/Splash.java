@@ -1,4 +1,4 @@
-package com.splash;
+package com.helloworld;
 
 import android.app.Activity;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,30 +19,36 @@ public class Splash extends NavigationActivity {
                 launchScreen,
                 context,
                 (none) -> {
-                    try {
-                        String userName = getUserName(context);
-                        String language = getLanguage(context);
-                        String localLang = Locale.getDefault().getLanguage();
-                        TextView userNameView = context.findViewById(userGreetingsId);
-                        String hi = new String();
-                        if (language != null && !language.equals("null") && language.equals("ru") || language == null && localLang.equals("ru")) {
-                            hi = "Привет";
-                        } else {
-                            hi = "Hi";
-                        }
-                        StringBuilder greetings = new StringBuilder().append(hi);
-                        if (userName != null && !userName.equals("null")) {
-                            greetings
-                                    .append(", ")
-                                    .append(userName);
-                        }
-                        userNameView.setText(greetings.toString().toUpperCase());
-                    } catch (Exception e) {
-                        FLog.w("showUserGreetings", e.getMessage(), e);
-                    }
+                    //uncomment next line and modify native screen if needed
+                    // setGreetings(context, userGreetingsId);
+
                     return null;
                 }
         );
+    }
+
+    public static void setGreetings(Activity context, int userGreetingsId) {
+        try {
+            String userName = getUserName(context);
+            String language = getLanguage(context);
+            String localLang = Locale.getDefault().getLanguage();
+            TextView userNameView = context.findViewById(userGreetingsId);
+            String hi = new String();
+            if (language != null && !language.equals("null") && language.equals("ru") || language == null && localLang.equals("ru")) {
+                hi = "Привет";
+            } else {
+                hi = "Hi";
+            }
+            StringBuilder greetings = new StringBuilder().append(hi);
+            if (userName != null && !userName.equals("null")) {
+                greetings
+                        .append(", ")
+                        .append(userName);
+            }
+            userNameView.setText(greetings.toString().toUpperCase());
+        } catch (Exception e) {
+            FLog.w("showUserGreetings", e.getMessage(), e);
+        }
     }
 
     public static String getUserName(Activity context) {

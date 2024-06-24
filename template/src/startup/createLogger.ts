@@ -51,7 +51,7 @@ export function createLogger(loggerInstance: MultiLogger, overrideLogLevel?: Log
         //     minevel: seqLogLevel,
         //     constantlyPassingParams: {
         //         "SessionId": guid(),
-        //         "AppName": `MobileClient-FC.Spartak-${Platform.OS}`,
+        //         "AppName": `MobileClient-com.helloworld-${Platform.OS}`,
         //         "_kubernetes_namespace_name": "mobile-client-club-dev",
         //     },
         //     onFlushError: error => console.log("seq logger flush error", error, error.stack, error.message),
